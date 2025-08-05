@@ -107,7 +107,7 @@ if submitted:
         "Very Poor": "🟣",
         "Severe": "⚫️"
     }
-  st.success(f"📌 Predicted AQI Category: {emoji} **{pred_label}**")
+    st.success(f"📌 Predicted AQI Category: {emoji} **{pred_label}**")
 
 
     st.markdown("---")
@@ -144,6 +144,7 @@ if submitted:
 
     except Exception as e:
         st.warning(f"⚠️ SHAP explanation failed: {e}")
+
 
 
 
