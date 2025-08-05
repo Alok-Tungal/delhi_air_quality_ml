@@ -232,14 +232,12 @@ import io
 
 # 📥 Download AQI report
 st.markdown("---")
-st.markdown("### 📥 Download AQI Prediction Report")
 
-# Generate summary string
+# ✅ Make sure you're using `pred_label`, not `pred_values`
 summary = f"""
 Delhi AQI Prediction Report
 -----------------------------
-AQI Category: {pred_values}
-Emoji: {emoji}
+📌 AQI Category: {emoji} {pred_label}
 -----------------------------
 Pollutant Levels:
 PM2.5: {pm25} µg/m³
@@ -250,27 +248,14 @@ CO: {co} mg/m³
 Ozone: {ozone} µg/m³
 """
 
-# Create downloadable buffer
+# ✅ Prepare buffer and enable download
 buffer = io.StringIO()
 buffer.write(summary)
+buffer.seek(0)
 
-# Download button
 st.download_button(
     label="📥 Download AQI Report",
-    data=buffer.getvalue(),
+    data=buffer,
     file_name="aqi_report.txt",
     mime="text/plain"
 )
-
-
-
-
-
-
-
-
-
-
-
-
-
