@@ -462,9 +462,8 @@ st.dataframe(df_trend.rename(columns={"Date": "📅 Date", "AQI": "🌫️ AQI V
 
 import qrcode
 from PIL import Image
-import streamlit.components.v1 as components
 
-# Generate summary again (or reuse your variable if already exists)
+# AQI Summary text
 summary_text = f"""
 📍 Delhi AQI Report
 
@@ -479,12 +478,12 @@ Pollutants:
 - Ozone: {ozone} µg/m³
 """
 
-# Generate QR
-qr = qrcode.make(summary_text)
-qr_path = "aqi_qr.png"
-qr.save(qr_path)
+# Generate QR code
+qr_img = qrcode.make(summary_text)
+qr_path = "aqi_summary_qr.png"
+qr_img.save(qr_path)
 
-# Show QR Code
+# Display in app
 st.markdown("### 📲 Share via QR Code")
 st.image(qr_path, caption="Scan to view AQI Summary", use_column_width=False)
 
@@ -496,4 +495,5 @@ tweet_url = f"https://twitter.com/intent/tweet?text={urllib.parse.quote(message)
 
 st.markdown("### 📤 Share on Social Media")
 st.markdown(f"[🐦 Share on Twitter]({tweet_url})", unsafe_allow_html=True)
+
 
