@@ -172,13 +172,13 @@ default_values = preset_values.get(selected_category, [120.0, 180.0, 40.0, 10.0,
 
 col1, col2 = st.columns(2)
 with col1:
-    pm25 = st.number_input("PM2.5 (µg/m³)", min_value=0.0, value=default_values[0])
-    no2 = st.number_input("NO₂ (µg/m³)", min_value=0.0, value=default_values[2])
-    co = st.number_input("CO (mg/m³)", min_value=0.0, value=default_values[4])
+    pm25 = st.number_input("PM2.5 (µg/m³)", min_value=0.0, value=default_values[0], key="pm25_input")
+    no2 = st.number_input("NO₂ (µg/m³)", min_value=0.0, value=default_values[2], key="no2_input")
+    co = st.number_input("CO (mg/m³)", min_value=0.0, value=default_values[4], key="co_input")
 with col2:
-    pm10 = st.number_input("PM10 (µg/m³)", min_value=0.0, value=default_values[1])
-    so2 = st.number_input("SO₂ (µg/m³)", min_value=0.0, value=default_values[3])
-    ozone = st.number_input("Ozone (µg/m³)", min_value=0.0, value=default_values[5])
+    pm10 = st.number_input("PM10 (µg/m³)", min_value=0.0, value=default_values[1], key="pm10_input")
+    so2 = st.number_input("SO₂ (µg/m³)", min_value=0.0, value=default_values[3], key="so2_input")
+    ozone = st.number_input("Ozone (µg/m³)", min_value=0.0, value=default_values[5], key="ozone_input")
 
 
 
@@ -250,6 +250,7 @@ import io
 buffer = io.StringIO()
 buffer.write(summary)
 st.download_button("📥 Download AQI Report", buffer.getvalue(), file_name="aqi_report.txt")
+
 
 
 
