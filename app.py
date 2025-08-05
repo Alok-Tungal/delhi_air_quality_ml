@@ -228,7 +228,7 @@ elif pm25 < 50 and pm10 < 50:
 
 
 
-if st.button("🔮 Predict AQI Category"):
+if st.button("🔮 Predict AQI Category", key="predict_button_main"):
 
     # Step 4: Run Prediction
     input_data = np.array([[pm25, pm10, no2, so2, co, ozone]])
@@ -274,3 +274,4 @@ Ozone: {ozone} µg/m³
         mime="text/plain",
         key="download_report"
     )
+
