@@ -77,26 +77,43 @@ if selected == "Predict AQI":
         emoji = color_map.get(pred_label, "❓")
         st.markdown(f"### 📌 Predicted AQI Category: {emoji} **{pred_label}**")
 
-        st.markdown("---")
-        st.markdown("### 📊 Feature Contribution (SHAP Explanation)")
-        try:
-            explainer = shap.Explainer(model, feature_names=["PM2.5", "PM10", "NO2", "SO2", "CO", "Ozone"])
-            shap_values = explainer(input_data)
+    # SHAP explanation
+    st.markdown("---")
+    st.markdown("📊 **Feature Contribution (SHAP Visualization)**")
 
-            st.markdown("📉 Waterfall Plot:")
+    try:
+        explainer = shap.Explainer(model, feature_names=["PM2.5", "PM10", "NO₂", "SO₂", "CO", "Ozone"])
+        shap_values = explainer(input_data)
+
+        # Check if it's multiclass (returns (n_samples, n_classes, n_features))
+        if len(shap_values.values.shape) == 3:
+            class_index = pred_encoded  # Get SHAP values for predicted class
+            class_shap = shap_values.values[0][class_index]
+
             fig1, ax1 = plt.subplots(figsize=(10, 4))
-            shap.plots.waterfall(shap_values[0], show=False)
+            shap.plots._waterfall.waterfall_legacy(
+                explainer.expected_value[class_index],
+                class_shap,
+                feature_names=explainer.feature_names,
+                features=input_data[0]
+            )
             st.pyplot(fig1)
             plt.clf()
 
-            if st.checkbox("Show SHAP Bar Plot"):
-                fig2, ax2 = plt.subplots(figsize=(10, 4))
-                shap.plots.bar(shap_values, show=False)
-                st.pyplot(fig2)
-                plt.clf()
+        else:
+            # Binary or regression
+            fig1, ax1 = plt.subplots(figsize=(10, 4))
+            shap.plots._waterfall.waterfall_legacy(
+                explainer.expected_value,
+                shap_values.values[0],
+                feature_names=explainer.feature_names,
+                features=input_data[0]
+            )
+            st.pyplot(fig1)
+            plt.clf()
 
-        except Exception as e:
-            st.warning(f"⚠️ SHAP explanation could not be generated: {e}")
+    except Exception as e:
+        st.warning(f"⚠️ SHAP explanation could not be generated: {e}")
 
 elif selected == "About":
     st.title("ℹ️ About AQI Categories")
@@ -110,3 +127,4 @@ elif selected == "About":
     """)
     st.markdown("---")
     st.caption("Created by Alok Tungal | ✨ Designed with ❤️ + Random Forest + SHAP")
+
