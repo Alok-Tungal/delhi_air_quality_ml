@@ -238,7 +238,7 @@ st.markdown("### 📥 Download AQI Prediction Report")
 summary = f"""
 Delhi AQI Prediction Report
 -----------------------------
-AQI Category: {pred_label}
+AQI Category: {pred_values}
 Emoji: {emoji}
 -----------------------------
 Pollutant Levels:
@@ -261,6 +261,7 @@ st.download_button(
     file_name="aqi_report.txt",
     mime="text/plain"
 )
+
 
 
 
