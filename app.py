@@ -1,6 +1,7 @@
 import streamlit as st
 from streamlit_option_menu import option_menu
 import io
+import seaborn as sns
 # Set page config
 st.set_page_config(page_title="🌫️ Delhi AQI Dashboard", layout="wide")
 
@@ -468,6 +469,7 @@ st.line_chart(df_trend.set_index("Date"), use_container_width=True)
 
 # Add a mini table below
 st.dataframe(df_trend.rename(columns={"Date": "📅 Date", "AQI": "🌫️ AQI Value"}), use_container_width=True)
+
 
 
 
