@@ -463,8 +463,21 @@ st.dataframe(df_trend.rename(columns={"Date": "📅 Date", "AQI": "🌫️ AQI V
 import qrcode
 from PIL import Image
 
-st.session_state.pred_label = pred_label
-st.session_state.emoji = emoji
+if st.button("🔮 Predict AQI Category", key="predict_aqi"):
+    input_data = np.array([[pm25, pm10, no2, so2, co, ozone]])
+    pred_encoded = model.predict(input_data)[0]
+    pred_label = label_encoder.inverse_transform([pred_encoded])[0]
+
+    color_map = {
+        "Good": "🟢",
+        "Satisfactory": "🟡",
+        "Moderate": "🟠",
+        "Poor": "🔴",
+        "Very Poor": "🟣",
+        "Severe": "⚫️"
+    }
+    emoji = color_map.get(pred_label, "❓")
+
 
 # AQI Summary text
 summary_text = f"""
@@ -480,9 +493,6 @@ Pollutants:
 - CO: {co} mg/m³
 - Ozone: {ozone} µg/m³
 """
-
-emoji = st.session_state.get("emoji", "❓")
-pred_label = st.session_state.get("pred_label", "Unknown")
 
 # Generate QR code
 qr_img = qrcode.make(summary_text)
@@ -502,6 +512,7 @@ tweet_url = f"https://twitter.com/intent/tweet?text={urllib.parse.quote(message)
 
 st.markdown("### 📤 Share on Social Media")
 st.markdown(f"[🐦 Share on Twitter]({tweet_url})", unsafe_allow_html=True)
+
 
 
 
