@@ -48,26 +48,22 @@ if st.button("Predict AQI Category"):
     st.markdown("---")
     st.markdown("📊 **Feature Contribution using SHAP**")
 
-    try:
-        explainer = shap.Explainer(model, feature_names=["PM2.5", "PM10", "NO2", "SO2", "CO", "Ozone"])
-        shap_values = explainer(input_data)
+   try:
+    explainer = shap.Explainer(model, feature_names=["PM2.5", "PM10", "NO2", "SO2", "CO", "Ozone"])
+    shap_values = explainer(input_data)
 
-        # ✅ SHAP Waterfall Plot
-        st.markdown("📉 Waterfall Plot:")
+    st.markdown("📉 Waterfall Plot:")
+    
+    # Convert SHAP values to expected format if needed
+    if hasattr(shap_values, 'values') and shap_values.values.shape[0] == 1:
         fig1, ax1 = plt.subplots(figsize=(10, 4))
-        shap.plots.waterfall(shap_values[0,0])
+        shap.plots.waterfall(shap_values[0], show=False)
         st.pyplot(fig1)
         plt.clf()
-
-        # ✅ Optional Bar Plot
-        if st.checkbox("Show SHAP Bar Plot"):
-            fig2, ax2 = plt.subplots(figsize=(10, 4))
-            shap.plots.bar(shap_values, show=False)
-            st.pyplot(fig2)
-            plt.clf()
-
-    except Exception as e:
-        st.warning(f"⚠️ SHAP explanation could not be generated: {e}")
+    else:
+        st.warning("⚠️ SHAP returned unexpected shape for waterfall. Try with shap_values[0] only.")
+except Exception as e:
+    st.warning(f"⚠️ SHAP explanation could not be generated: {e}")
 
 # ℹ️ Information section
 with st.expander("ℹ️ About AQI Categories"):
@@ -83,5 +79,6 @@ with st.expander("ℹ️ About AQI Categories"):
 # 📎 Footer
 st.markdown("---")
 st.caption("Created by Alok Tungal | Powered by Random Forest 🌳 + SHAP Explainability")
+
 
 
