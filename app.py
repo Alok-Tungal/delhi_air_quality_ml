@@ -1,6 +1,7 @@
 import streamlit as st
 import numpy as np
 import joblib
+import shap
 import matplotlib.pyplot as plt
 
 # Load model and label encoder
@@ -67,6 +68,7 @@ with st.expander("ℹ️ About AQI Categories"):
 # Footer
 st.markdown("---")
 st.caption("Created by Alok Tungal | Powered by Random Forest 🌳")
+
 
 
 
