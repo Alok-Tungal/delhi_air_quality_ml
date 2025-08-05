@@ -462,27 +462,14 @@ st.dataframe(df_trend.rename(columns={"Date": "📅 Date", "AQI": "🌫️ AQI V
 
 import qrcode
 from PIL import Image
+import urllib.parse
+import os
 
-if st.button("🔮 Predict AQI Category", key="predict_button"):
-    input_data = np.array([[pm25, pm10, no2, so2, co, ozone]])
-    pred_encoded = model.predict(input_data)[0]
-    pred_label = label_encoder.inverse_transform([pred_encoded])[0]
+# ✅ Safely retrieve values
+emoji = st.session_state.get("emoji", "❓")
+pred_label = st.session_state.get("pred_label", "Unknown")
 
-    color_map = {
-        "Good": "🟢",
-        "Satisfactory": "🟡",
-        "Moderate": "🟠",
-        "Poor": "🔴",
-        "Very Poor": "🟣",
-        "Severe": "⚫️"
-    }
-    emoji = color_map.get(pred_label, "❓")
-
-    st.markdown(f"### 📌 AQI Category: {emoji} **{pred_label}**")
-
-
-
-# AQI Summary text
+# ✅ Build AQI summary
 summary_text = f"""
 📍 Delhi AQI Report
 
@@ -497,26 +484,22 @@ Pollutants:
 - Ozone: {ozone} µg/m³
 """
 
-# Generate QR code
+# ✅ Generate QR code and save image
 qr_img = qrcode.make(summary_text)
 qr_path = "aqi_summary_qr.png"
 qr_img.save(qr_path)
 
-
-# Display in app
+# ✅ Display QR in Streamlit
 st.markdown("### 📲 Share via QR Code")
-st.image(qr_path, caption="Scan to view AQI Summary", use_column_width=False)
+st.image(qr_path, caption="📷 Scan to view AQI Summary", use_column_width=False)
 
-
-import urllib.parse
-
+# ✅ Build tweet text
 message = f"Delhi AQI today is {pred_label} {emoji}. Check your pollution levels! #AQI #AirQuality"
 tweet_url = f"https://twitter.com/intent/tweet?text={urllib.parse.quote(message)}"
 
 st.markdown("### 📤 Share on Social Media")
 st.markdown(f"[🐦 Share on Twitter]({tweet_url})", unsafe_allow_html=True)
 
-
-
-
-
+# ✅ Optional: Remove QR image after use (cleanup)
+if os.path.exists(qr_path):
+    os.remove(qr_path)
