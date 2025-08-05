@@ -337,45 +337,5 @@ st.line_chart(df_trend.set_index("Date"), use_container_width=True)
 st.dataframe(df_trend.rename(columns={"Date": "📅 Date", "AQI": "🌫️ AQI Value"}), use_container_width=True)
 
 
-# step 7 
-import requests
-
-def get_city_aqi(city_name, api_key):
-    try:
-        # Step 1: Get lat/lon of city
-        geo_url = f"http://api.openweathermap.org/geo/1.0/direct?q={city_name}&limit=1&appid={api_key}"
-        geo_resp = requests.get(geo_url).json()
-        lat = geo_resp[0]['lat']
-        lon = geo_resp[0]['lon']
-
-        # Step 2: Get AQI using lat/lon
-        aqi_url = f"http://api.openweathermap.org/data/2.5/air_pollution?lat={lat}&lon={lon}&appid={api_key}"
-        aqi_resp = requests.get(aqi_url).json()
-        aqi_index = aqi_resp['list'][0]['main']['aqi']  # 1 (Good) to 5 (Very Poor)
-
-        # Mapping
-        aqi_map = {
-            1: "Good",
-            2: "Fair",
-            3: "Moderate",
-            4: "Poor",
-            5: "Very Poor"
-        }
-        return aqi_map.get(aqi_index, "Unknown")
-    
-    except Exception as e:
-        return f"Error: {e}"
-
-st.markdown("---")
-st.markdown("🏙️ **Check Real-Time AQI by City (via OpenWeatherMap)**")
-
-with st.expander("🔍 Search AQI by City"):
-    city_name = st.text_input("Enter City Name", "Delhi")
-    if st.button("🌐 Get Real-Time AQI", key="realtime_button"):
-        api_key = "575bdbfecaade0765ef54875e4305fbc"  # 🔐 Replace with your actual API key
-        realtime_aqi = get_city_aqi(city_name, api_key)
-        st.info(f"🌍 Real-Time AQI in **{city_name.title()}** is: **{realtime_aqi}**")
-
-
 
 
