@@ -170,6 +170,16 @@ preset_values = {
 default_values = preset_values.get(selected_category, [120, 180, 40, 10, 1.2, 20])
 
 
+col1, col2 = st.columns(2)
+with col1:
+    pm25 = st.number_input("PM2.5 (µg/m³)", min_value=0.0, value=default_values[0])
+    no2 = st.number_input("NO₂ (µg/m³)", min_value=0.0, value=default_values[2])
+    co = st.number_input("CO (mg/m³)", min_value=0.0, value=default_values[4])
+with col2:
+    pm10 = st.number_input("PM10 (µg/m³)", min_value=0.0, value=default_values[1])
+    so2 = st.number_input("SO₂ (µg/m³)", min_value=0.0, value=default_values[3])
+    ozone = st.number_input("Ozone (µg/m³)", min_value=0.0, value=default_values[5])
+
 
 
 
