@@ -94,11 +94,13 @@ with st.form("aqi_form"):
 
     submitted = st.form_submit_button("🔍 Predict AQI")
 
-if submitted:
+# 🧠 Predict
+if st.button("🔮 Predict AQI Category"):
     input_data = np.array([[pm25, pm10, no2, so2, co, ozone]])
     pred_encoded = model.predict(input_data)[0]
     pred_label = label_encoder.inverse_transform([pred_encoded])[0]
 
+    # 🟨 AQI Emoji Map
     emoji_map = {
         "Good": "🟢",
         "Satisfactory": "🟡",
@@ -107,6 +109,9 @@ if submitted:
         "Very Poor": "🟣",
         "Severe": "⚫️"
     }
+    emoji = emoji_map.get(pred_label, "❓")
+
+    # ✅ Beautiful Output - Light & Dark mode compatible
     st.success(f"📌 Predicted AQI Category: {emoji} **{pred_label}**")
 
 
@@ -144,6 +149,7 @@ if submitted:
 
     except Exception as e:
         st.warning(f"⚠️ SHAP explanation failed: {e}")
+
 
 
 
