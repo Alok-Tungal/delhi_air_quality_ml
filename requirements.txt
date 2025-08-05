@@ -1,6 +1,6 @@
 streamlit
-scikit-learn
+joblib
+shap
 matplotlib
 numpy
-shap
-joblib
+streamlit-option-menu
