@@ -48,23 +48,22 @@ if st.button("🔮 Predict AQI Category"):
     st.markdown("📊 **Feature Contribution (SHAP Visualization)**")
 
     try:
-        # Create SHAP explainer (TreeExplainer works best for tree-based models like RF)
         explainer = shap.TreeExplainer(model)
-        shap_values = explainer(input_data)
+        shap_values = explainer.shap_values(input_data)
 
-        st.markdown("📉 **Waterfall Plot (for predicted class)**")
+        # Get predicted class index
+        class_index = pred_encoded  # this is the class predicted by the model
+
+        st.markdown("📉 **Waterfall Plot for Predicted Class**")
         fig1, ax1 = plt.subplots(figsize=(10, 4))
-        shap.plots.waterfall(shap_values[0][pred_encoded], show=False)
+        shap.plots._waterfall.waterfall_legacy(
+            explainer.expected_value[class_index],
+            shap_values[class_index][0],
+            feature_names=["PM2.5", "PM10", "NO₂", "SO₂", "CO", "Ozone"],
+            features=input_data[0]
+        )
         st.pyplot(fig1)
         plt.clf()
-
-        # Optional Bar Chart
-        if st.checkbox("Show SHAP Bar Plot"):
-            st.markdown("📊 **Bar Plot of SHAP Values**")
-            fig2, ax2 = plt.subplots(figsize=(10, 4))
-            shap.plots.bar(shap_values[0], show=False)
-            st.pyplot(fig2)
-            plt.clf()
 
     except Exception as e:
         st.warning(f"⚠️ SHAP explanation could not be generated: {e}")
@@ -83,4 +82,5 @@ with st.expander("ℹ️ About AQI Categories"):
 # Footer
 st.markdown("---")
 st.caption("Created by Alok Tungal | Powered by Random Forest 🌳 + SHAP Explainability")
+
 
