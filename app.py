@@ -226,8 +226,29 @@ if pm25 > 250 or pm10 > 300:
 elif pm25 < 50 and pm10 < 50:
     st.success("✅ Air looks clean today! Great time for a walk.")
 
-# 🔮 Step 4 – Predict AQI & Download Report
-report_text = f"""
+if st.button("🔮 Predict AQI Category"):
+
+    # Step 4: Run Prediction
+    input_data = np.array([[pm25, pm10, no2, so2, co, ozone]])
+    pred_encoded = model.predict(input_data)[0]
+    pred_label = label_encoder.inverse_transform([pred_encoded])[0]
+
+    color_map = {
+        "Good": "🟢",
+        "Satisfactory": "🟡",
+        "Moderate": "🟠",
+        "Poor": "🔴",
+        "Very Poor": "🟣",
+        "Severe": "⚫️"
+    }
+    emoji = color_map.get(pred_label, "❓")
+
+    # ✅ Show Prediction Result
+    st.markdown(f"### 📌 AQI Category: {emoji} **{pred_label}**")
+
+    # ✅ Downloadable AQI Report
+import io
+    report_text = f"""
 Delhi AQI Prediction Report
 -----------------------------
 📌 AQI Category: {emoji} {pred_label}
@@ -240,17 +261,14 @@ SO₂: {so2} µg/m³
 CO: {co} mg/m³
 Ozone: {ozone} µg/m³
 """
+    report_data = io.StringIO()
+    report_data.write(report_text)
+    report_string = report_data.getvalue()
 
-report_data = io.StringIO()
-report_data.write(report_text)
-report_string = report_data.getvalue()
-
-st.download_button(
-    label="📥 Download AQI Report",
-    data=report_string,
-    file_name="aqi_report.txt",
-    mime="text/plain",
-    key="download_report"
-)
-
-
+    st.download_button(
+        label="📥 Download AQI Report",
+        data=report_string,
+        file_name="aqi_report.txt",
+        mime="text/plain",
+        key="download_report"
+    )
