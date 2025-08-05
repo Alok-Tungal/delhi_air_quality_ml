@@ -349,48 +349,59 @@ with st.expander("📘 Know Your Pollutants – Short Guide"):
 
     
     # ✅ Downloadable AQI Report
-if st.button("🔮 Predict AQI Category", key="predict_aqi"):
-    input_data = np.array([[pm25, pm10, no2, so2, co, ozone]])
-    pred_encoded = model.predict(input_data)[0]
-    pred_label = label_encoder.inverse_transform([pred_encoded])[0]
+# ✅ STEP 7: AQI Knowledge Hub 🧠💨
+with st.expander("📚 Learn About AQI & Health Tips"):
+    st.markdown("### 💡 What Do These Pollutants Mean?")
+    
+    st.markdown("""
+- **🟤 PM2.5 (Fine Particles):** Penetrates deep into lungs. Sources: dust, smoke.
+- **🟠 PM10 (Coarse Particles):** Irritates eyes, nose, and throat.
+- **🟣 NO₂ (Nitrogen Dioxide):** Increases asthma risk, especially in children.
+- **🔵 SO₂ (Sulfur Dioxide):** Causes coughing, shortness of breath.
+- **⚫ CO (Carbon Monoxide):** Reduces oxygen to brain; very dangerous at high levels.
+- **🟢 Ozone (O₃):** Harmful at ground level — affects lung function.
+""")
 
-    color_map = {
-        "Good": "🟢",
-        "Satisfactory": "🟡",
-        "Moderate": "🟠",
-        "Poor": "🔴",
-        "Very Poor": "🟣",
-        "Severe": "⚫️"
-    }
-    emoji = color_map.get(pred_label, "❓")
+    st.markdown("### 📈 AQI Historical Meaning:")
+    st.info("""
+- AQI below **100** = Generally safe for most people.
+- AQI above **200** = Can be dangerous for sensitive groups.
+- AQI **above 300** = Public health emergency levels!
+    """)
 
+    st.markdown("### 🧘 Health Tips for High AQI Days:")
+    st.success("""
+- ✅ Stay indoors & use air purifiers
+- ✅ Wear N95 masks outdoors
+- ✅ Drink water to stay hydrated
+- ✅ Avoid morning walks on high-pollution days
+""")
 
+    # Download Educational Material
     import io
-    report_text = f"""
-Delhi AQI Prediction Report
------------------------------
-📌 AQI Category: {emoji} {pred_label}
------------------------------
-Pollutant Levels:
-PM2.5: {pm25} µg/m³
-PM10: {pm10} µg/m³
-NO₂: {no2} µg/m³
-SO₂: {so2} µg/m³
-CO: {co} mg/m³
-Ozone: {ozone} µg/m³
-"""
-    report_data = io.StringIO()
-    report_data.write(report_text)
-    report_string = report_data.getvalue()
+    education_text = """
+Air Quality & You 🌍
 
+Pollutants Explained:
+- PM2.5, PM10 → Lung irritants
+- NO2, SO2 → Harmful to respiratory system
+- CO → Oxygen blocker
+- Ozone → Triggers asthma
+
+Stay safe:
+✔ Stay indoors on high AQI days
+✔ Use masks, purifiers, and hydrate often
+
+Made with ❤️ by Alok Tungal
+    """
+    buffer = io.StringIO(education_text)
     st.download_button(
-        label="📥 Download AQI Report",
-        data=report_string,
-        file_name="aqi_report.txt",
+        label="📥 Download AQI Safety Guide",
+        data=buffer,
+        file_name="aqi_safety_guide.txt",
         mime="text/plain",
-        key="download_report"
+        key="download_guide_education"
     )
-
 
 # step 6
 # Step 6: Show Recent AQI Trend (Static Sample Data for Demo)
@@ -412,6 +423,7 @@ st.line_chart(df_trend.set_index("Date"), use_container_width=True)
 
 # Add a mini table below
 st.dataframe(df_trend.rename(columns={"Date": "📅 Date", "AQI": "🌫️ AQI Value"}), use_container_width=True)
+
 
 
 
