@@ -348,7 +348,6 @@ with st.expander("📘 Know Your Pollutants – Short Guide"):
     """)
 
     
-    # ✅ Downloadable AQI Report
 # ✅ STEP 7: AQI Knowledge Hub 🧠💨
 with st.expander("📚 Learn About AQI & Health Tips"):
     st.markdown("### 💡 What Do These Pollutants Mean?")
@@ -377,8 +376,7 @@ with st.expander("📚 Learn About AQI & Health Tips"):
 - ✅ Avoid morning walks on high-pollution days
 """)
 
-    # Download Educational Material
-    import io
+    # ✅ Fixed Download Button (text string instead of StringIO)
     education_text = """
 Air Quality & You 🌍
 
@@ -394,10 +392,9 @@ Stay safe:
 
 Made with ❤️ by Alok Tungal
     """
-    buffer = io.StringIO(education_text)
     st.download_button(
         label="📥 Download AQI Safety Guide",
-        data=buffer,
+        data=education_text,  # 🛠️ Send string instead of StringIO
         file_name="aqi_safety_guide.txt",
         mime="text/plain",
         key="download_guide_education"
@@ -423,6 +420,7 @@ st.line_chart(df_trend.set_index("Date"), use_container_width=True)
 
 # Add a mini table below
 st.dataframe(df_trend.rename(columns={"Date": "📅 Date", "AQI": "🌫️ AQI Value"}), use_container_width=True)
+
 
 
 
