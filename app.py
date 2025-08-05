@@ -491,7 +491,7 @@ qr_img.save(qr_path)
 
 # ✅ Display QR in Streamlit
 st.markdown("### 📲 Share via QR Code")
-st.image(qr_path, caption="📷 Scan to view AQI Summary", use_column_width=False)
+st.image(qr_path, caption="📷 Scan to view AQI Summary", use_container_width=True)
 
 # ✅ Build tweet text
 message = f"Delhi AQI today is {pred_label} {emoji}. Check your pollution levels! #AQI #AirQuality"
@@ -503,3 +503,4 @@ st.markdown(f"[🐦 Share on Twitter]({tweet_url})", unsafe_allow_html=True)
 # ✅ Optional: Remove QR image after use (cleanup)
 if os.path.exists(qr_path):
     os.remove(qr_path)
+
