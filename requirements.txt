@@ -1,7 +1,6 @@
 streamlit
-numpy
-joblib
-shap
-matplotlib
 scikit-learn
-
+matplotlib
+numpy
+shap
+joblib
