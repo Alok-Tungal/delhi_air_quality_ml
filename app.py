@@ -344,6 +344,48 @@ plt.grid(axis="y")
 st.pyplot(fig)
 plt.clf()
 
+st.markdown("---")
+st.markdown("### 🧠 Understand the Pollutants & Their Impact")
+
+pollutant_info = {
+    "PM2.5": {
+        "emoji": "🌫️",
+        "source": "Combustion engines, factories, stubble burning",
+        "effect": "Can penetrate deep into lungs and enter bloodstream, causing heart and lung issues.",
+    },
+    "PM10": {
+        "emoji": "🌪️",
+        "source": "Dust, construction, roads",
+        "effect": "Irritates nose, throat, and lungs. Can trigger asthma.",
+    },
+    "NO₂": {
+        "emoji": "🛻",
+        "source": "Vehicle emissions, industrial activities",
+        "effect": "Aggravates respiratory diseases like asthma. Increases hospital visits.",
+    },
+    "SO₂": {
+        "emoji": "🏭",
+        "source": "Coal burning, thermal power plants",
+        "effect": "Affects lungs, causes wheezing, shortness of breath.",
+    },
+    "CO": {
+        "emoji": "🚗",
+        "source": "Incomplete combustion in vehicles, stoves",
+        "effect": "Reduces oxygen supply to body organs. Dangerous in enclosed areas.",
+    },
+    "Ozone": {
+        "emoji": "☀️",
+        "source": "Formed by sunlight reacting with pollutants (secondary pollutant)",
+        "effect": "Causes chest pain, coughing, worsens bronchitis & asthma.",
+    }
+}
+
+for pollutant, details in pollutant_info.items():
+    st.markdown(f"""
+**{details['emoji']} {pollutant}**
+- **Source:** {details['source']}
+- **Health Effect:** {details['effect']}
+    """)
 
 with st.expander("📘 Know Your Pollutants – Short Guide"):
     st.markdown("""
@@ -440,14 +482,3 @@ st.line_chart(df_trend.set_index("Date"), use_container_width=True)
 
 # Add a mini table below
 st.dataframe(df_trend.rename(columns={"Date": "📅 Date", "AQI": "🌫️ AQI Value"}), use_container_width=True)
-
-
-
-
-
-
-
-
-
-
-
