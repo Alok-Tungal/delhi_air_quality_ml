@@ -77,7 +77,7 @@ model = joblib.load("aqi_rf_model.joblib")
 label_encoder = joblib.load("label_encoder.joblib")
 
 # Page title
-st.title("🔮 Predict Delhi AQI Category")
+st.title("🔮 **Predict Delhi AQI Category**")
 st.markdown("Enter the pollutant levels below to predict the **Air Quality Index (AQI)** category.")
 
 # Input form
@@ -145,3 +145,4 @@ if submitted:
 
     except Exception as e:
         st.warning(f"⚠️ SHAP explanation failed: {e}")
+
