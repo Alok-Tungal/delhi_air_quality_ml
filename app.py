@@ -229,9 +229,8 @@ elif pm25 < 50 and pm10 < 50:
 
 # step 4
 
-if st.button("🔮 Predict AQI Category", key="predict_button_main"):
-
-    # Step 4: Run Prediction
+# Step 4: Predict AQI
+if st.button("🔮 Predict AQI Category", key="predict_aqi"):
     input_data = np.array([[pm25, pm10, no2, so2, co, ozone]])
     pred_encoded = model.predict(input_data)[0]
     pred_label = label_encoder.inverse_transform([pred_encoded])[0]
@@ -249,44 +248,43 @@ if st.button("🔮 Predict AQI Category", key="predict_button_main"):
     # ✅ Show Prediction Result
     st.markdown(f"### 📌 AQI Category: {emoji} **{pred_label}**")
 
-    # Step 5: Health Tips & Recommendations
-st.markdown("---")
-st.markdown("🩺 **Health Impact & Recommendations:**")
+    # ✅ Step 5: Health Tips & Recommendations
+    st.markdown("---")
+    st.markdown("🩺 **Health Impact & Recommendations:**")
 
-aqi_health_tips = {
-    "Good": {
-        "impact": "Air quality is considered satisfactory, and air pollution poses little or no risk.",
-        "tip": "Enjoy your day! It’s a great time for outdoor activities. 😊"
-    },
-    "Satisfactory": {
-        "impact": "Air quality is acceptable. However, there may be a risk for some sensitive individuals.",
-        "tip": "If you have asthma or allergies, keep medications handy. 🤧"
-    },
-    "Moderate": {
-        "impact": "Air quality is okay for most, but may cause minor irritation to sensitive groups.",
-        "tip": "Avoid intense outdoor activities. Hydrate well. 💧"
-    },
-    "Poor": {
-        "impact": "Everyone may begin to experience health effects; sensitive individuals may experience serious effects.",
-        "tip": "Limit outdoor exposure. Use a mask if necessary. 😷"
-    },
-    "Very Poor": {
-        "impact": "Health warnings of emergency conditions. Serious effects on everyone's health.",
-        "tip": "Avoid going out. Stay indoors with air filters. ❌🌫️"
-    },
-    "Severe": {
-        "impact": "Serious health effects even for healthy people.",
-        "tip": "Emergency! Remain indoors and avoid all physical exertion. 🚨"
+    aqi_health_tips = {
+        "Good": {
+            "impact": "Air quality is considered satisfactory, and air pollution poses little or no risk.",
+            "tip": "Enjoy your day! It’s a great time for outdoor activities. 😊"
+        },
+        "Satisfactory": {
+            "impact": "Air quality is acceptable. However, there may be a risk for some sensitive individuals.",
+            "tip": "If you have asthma or allergies, keep medications handy. 🤧"
+        },
+        "Moderate": {
+            "impact": "Air quality is okay for most, but may cause minor irritation to sensitive groups.",
+            "tip": "Avoid intense outdoor activities. Hydrate well. 💧"
+        },
+        "Poor": {
+            "impact": "Everyone may begin to experience health effects; sensitive individuals may experience serious effects.",
+            "tip": "Limit outdoor exposure. Use a mask if necessary. 😷"
+        },
+        "Very Poor": {
+            "impact": "Health warnings of emergency conditions. Serious effects on everyone's health.",
+            "tip": "Avoid going out. Stay indoors with air filters. ❌🌫️"
+        },
+        "Severe": {
+            "impact": "Serious health effects even for healthy people.",
+            "tip": "Emergency! Remain indoors and avoid all physical exertion. 🚨"
+        }
     }
-}
 
-# Get health tips for predicted label
-if pred_label in aqi_health_tips:
-    info = aqi_health_tips[pred_label]
-    st.error(f"**Impact:** {info['impact']}")
-    st.info(f"**Tip:** {info['tip']}")
-else:
-    st.warning("No health tips available for this AQI category.")
+    if pred_label in aqi_health_tips:
+        info = aqi_health_tips[pred_label]
+        st.error(f"**Impact:** {info['impact']}")
+        st.info(f"**Tip:** {info['tip']}")
+    else:
+        st.warning("No health tips available for this AQI category.")
 
 
     # ✅ Downloadable AQI Report
@@ -315,5 +313,6 @@ Ozone: {ozone} µg/m³
         mime="text/plain",
         key="download_report"
     )
+
 
 
