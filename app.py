@@ -315,4 +315,25 @@ Ozone: {ozone} µg/m³
     )
 
 
+# step 6
+# Step 6: Show Recent AQI Trend (Static Sample Data for Demo)
+
+import pandas as pd
+
+st.markdown("---")
+st.markdown("📈 **Recent AQI Trends (Simulated)**")
+
+# Sample dummy data for past 7 days
+trend_data = {
+    "Date": pd.date_range(end=pd.Timestamp.today(), periods=7).strftime("%Y-%m-%d"),
+    "AQI": [random.randint(80, 450) for _ in range(7)]
+}
+df_trend = pd.DataFrame(trend_data)
+
+# Plot the AQI line chart
+st.line_chart(df_trend.set_index("Date"), use_container_width=True)
+
+# Add a mini table below
+st.dataframe(df_trend.rename(columns={"Date": "📅 Date", "AQI": "🌫️ AQI Value"}), use_container_width=True)
+
 
