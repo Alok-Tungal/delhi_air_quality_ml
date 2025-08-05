@@ -151,6 +151,27 @@ if st.button("🔮 Predict AQI Category"):
         st.warning(f"⚠️ SHAP explanation failed: {e}")
 
 
+st.markdown("### 🧪 Try a Sample AQI Scenario")
+selected_category = st.selectbox(
+    "Pick Target AQI Category to Auto-Fill Inputs:",
+    ["-- Select --", "Good", "Satisfactory", "Moderate", "Poor", "Very Poor", "Severe"]
+)
+
+preset_values = {
+    "Good": [25, 40, 20, 5, 0.8, 10],
+    "Satisfactory": [60, 70, 30, 8, 1.0, 15],
+    "Moderate": [110, 150, 50, 15, 1.5, 25],
+    "Poor": [180, 250, 80, 25, 2.0, 35],
+    "Very Poor": [310, 400, 110, 40, 2.5, 60],
+    "Severe": [420, 500, 150, 60, 3.0, 90]
+}
+
+# Set default values
+default_values = preset_values.get(selected_category, [120, 180, 40, 10, 1.2, 20])
+
+
+
+
 
 
 
