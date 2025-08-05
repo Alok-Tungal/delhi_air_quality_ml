@@ -324,6 +324,54 @@ plt.grid(axis="y")
 st.pyplot(fig)
 plt.clf()
 
+# ✅ Step 8: Historical AQI Comparison Chart
+import pandas as pd
+
+st.markdown("---")
+st.markdown("### 📊 Pollution Levels vs Safe Limits")
+
+# Your input values
+user_data = {
+    "PM2.5": pm25,
+    "PM10": pm10,
+    "NO₂": no2,
+    "SO₂": so2,
+    "CO": co,
+    "Ozone": ozone
+}
+
+# WHO safe limits (for visualization purposes)
+safe_limits = {
+    "PM2.5": 25,
+    "PM10": 50,
+    "NO₂": 40,
+    "SO₂": 20,
+    "CO": 4,
+    "Ozone": 50
+}
+
+# Create DataFrame for plotting
+df_compare = pd.DataFrame({
+    "Pollutant": list(user_data.keys()),
+    "Your Value": list(user_data.values()),
+    "Safe Limit": list(safe_limits.values())
+})
+
+# Melt for seaborn-style plotting
+df_melted = df_compare.melt(id_vars="Pollutant", var_name="Type", value_name="Level")
+
+# Plot
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+fig8, ax8 = plt.subplots(figsize=(10, 5))
+sns.barplot(data=df_melted, x="Pollutant", y="Level", hue="Type", ax=ax8)
+ax8.set_title("🔍 Your Pollution Levels vs WHO Safe Limits")
+ax8.set_ylabel("Concentration")
+ax8.set_xlabel("Pollutants")
+st.pyplot(fig8)
+
+
 
 with st.expander("📘 Know Your Pollutants – Short Guide"):
     st.markdown("""
@@ -420,6 +468,7 @@ st.line_chart(df_trend.set_index("Date"), use_container_width=True)
 
 # Add a mini table below
 st.dataframe(df_trend.rename(columns={"Date": "📅 Date", "AQI": "🌫️ AQI Value"}), use_container_width=True)
+
 
 
 
