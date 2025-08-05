@@ -228,13 +228,29 @@ elif pm25 < 50 and pm10 < 50:
     st.success("✅ Air looks clean today! Great time for a walk.")
 
 
-import io
+if st.button("🔮 Predict AQI Category"):
+    input_data = np.array([[pm25, pm10, no2, so2, co, ozone]])
+    pred_encoded = model.predict(input_data)[0]
+    pred_label = label_encoder.inverse_transform([pred_encoded])[0]
 
-# 📥 Download AQI report
-st.markdown("---")
+    color_map = {
+        "Good": "🟢",
+        "Satisfactory": "🟡",
+        "Moderate": "🟠",
+        "Poor": "🔴",
+        "Very Poor": "🟣",
+        "Severe": "⚫️"
+    }
+    emoji = color_map.get(pred_label, "❓")
 
-# ✅ Make sure you're using `pred_label`, not `pred_values`
-summary = f"""
+    # ✅ Show Prediction Result
+    st.markdown(f"### 📌 AQI Category: {emoji} **{pred_label}**")
+
+    # ✅ SHAP section here (if you use it)...
+
+    # ✅ Downloadable AQI Report
+    import io
+    summary = f"""
 Delhi AQI Prediction Report
 -----------------------------
 📌 AQI Category: {emoji} {pred_label}
@@ -247,15 +263,13 @@ SO₂: {so2} µg/m³
 CO: {co} mg/m³
 Ozone: {ozone} µg/m³
 """
+    buffer = io.StringIO()
+    buffer.write(summary)
+    buffer.seek(0)
 
-# ✅ Prepare buffer and enable download
-buffer = io.StringIO()
-buffer.write(summary)
-buffer.seek(0)
-
-st.download_button(
-    label="📥 Download AQI Report",
-    data=buffer,
-    file_name="aqi_report.txt",
-    mime="text/plain"
-)
+    st.download_button(
+        label="📥 Download AQI Report",
+        data=buffer,
+        file_name="aqi_report.txt",
+        mime="text/plain"
+    )
