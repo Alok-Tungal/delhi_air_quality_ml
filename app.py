@@ -386,29 +386,6 @@ for pollutant, details in pollutant_info.items():
 - **Source:** {details['source']}
 - **Health Effect:** {details['effect']}
     """)
-
-with st.expander("📘 Know Your Pollutants – Short Guide"):
-    st.markdown("""
-### 🧪 Pollutants and Their Effects
-
-- **PM2.5 / PM10**  
-  These are fine dust particles that penetrate deep into the lungs and bloodstream. Long-term exposure can cause asthma, heart disease, and reduced lung function.
-
-- **NO₂ (Nitrogen Dioxide)**  
-  Causes inflammation of the lungs, increased susceptibility to respiratory infections, and affects lung development in children.
-
-- **SO₂ (Sulfur Dioxide)**  
-  Causes throat irritation, coughing, and can worsen asthma. Exposure is more dangerous during heavy physical activity.
-
-- **CO (Carbon Monoxide)**  
-  A silent killer — reduces oxygen delivery to organs. High levels can cause dizziness, unconsciousness, or even death in closed spaces.
-
-- **Ozone (O₃)**  
-  Ground-level ozone forms smog. It irritates airways, triggers asthma, and reduces lung capacity.
-
-✅ **Tip:** Wear N95 masks in poor air, use air purifiers indoors, and track AQI before going out.
-    """)
-
     
 # ✅ STEP 7: AQI Knowledge Hub 🧠💨
 with st.expander("📚 Learn About AQI & Health Tips"):
@@ -482,3 +459,4 @@ st.line_chart(df_trend.set_index("Date"), use_container_width=True)
 
 # Add a mini table below
 st.dataframe(df_trend.rename(columns={"Date": "📅 Date", "AQI": "🌫️ AQI Value"}), use_container_width=True)
+
