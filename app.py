@@ -261,7 +261,7 @@ CO: {co} mg/m³
 Ozone: {ozone} µg/m³
 """
     buffer = io.StringIO()
-   report_data = io.StringIO()
+report_data = io.StringIO()
 report_data.write(report_text)
 report_string = report_data.getvalue()
 
@@ -272,3 +272,4 @@ st.download_button(
     mime="text/plain",
     key="download_report"
 )
+
