@@ -261,15 +261,14 @@ SO₂: {so2} µg/m³
 CO: {co} mg/m³
 Ozone: {ozone} µg/m³
 """
-    report_data = io.StringIO()
-    report_data.write(report_text)
-    report_string = report_data.getvalue()
+report_data = io.StringIO()
+report_data.write(report_text)
+report_string = report_data.getvalue()
 
-    st.download_button(
-        label="📥 Download AQI Report",
-        data=report_string,
-        file_name="aqi_report.txt",
-        mime="text/plain",
-        key="download_report"
-    )
-
+st.download_button(
+    label="📥 Download AQI Report",
+    data=report_string,
+    file_name="aqi_report.txt",
+    mime="text/plain",
+    key="download_report"
+)
