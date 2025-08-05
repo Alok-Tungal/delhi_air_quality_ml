@@ -1,5 +1,10 @@
-import streamlit as st
 import numpy as np
+
+# Fix for deprecated np.bool in SHAP
+if not hasattr(np, 'bool'):
+    np.bool = bool
+
+import streamlit as st
 import joblib
 import shap
 import matplotlib.pyplot as plt
@@ -85,3 +90,4 @@ with st.expander("ℹ️ About AQI Categories"):
 # Footer
 st.markdown("---")
 st.caption("Created by Alok Tungal | Powered by Random Forest 🌳 + SHAP Explainability")
+
