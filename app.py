@@ -372,9 +372,10 @@ st.markdown("🏙️ **Check Real-Time AQI by City (via OpenWeatherMap)**")
 with st.expander("🔍 Search AQI by City"):
     city_name = st.text_input("Enter City Name", "Delhi")
     if st.button("🌐 Get Real-Time AQI", key="realtime_button"):
-        api_key = "6487e2ec9248df14678d1fee5330e82e"  # 🔐 Replace with your actual API key
+        api_key = "575bdbfecaade0765ef54875e4305fbc"  # 🔐 Replace with your actual API key
         realtime_aqi = get_city_aqi(city_name, api_key)
         st.info(f"🌍 Real-Time AQI in **{city_name.title()}** is: **{realtime_aqi}**")
+
 
 
 
