@@ -80,3 +80,4 @@ with st.expander("ℹ️ About AQI Categories"):
 # Footer
 st.markdown("---")
 st.caption("Created by Alok Tungal | Powered by Random Forest 🌳 + SHAP Explainability")
+
