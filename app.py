@@ -1,7 +1,6 @@
 import streamlit as st
 import numpy as np
 import joblib
-!pip install shap
 import shap
 import matplotlib.pyplot as plt
 
@@ -69,4 +68,5 @@ with st.expander("ℹ️ About AQI Categories"):
 # Footer
 st.markdown("---")
 st.caption("Created by Alok Tungal | Powered by Random Forest 🌳")
+
 
