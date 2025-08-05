@@ -46,13 +46,18 @@ if st.button("🔮 Predict AQI Category"):
     # SHAP explanation
     st.markdown("---")
     st.markdown("📊 **Feature Contribution (SHAP Visualization)**")
-    explainer = shap.Explainer(model)
-    shap_values = explainer(input_data)
 
-    # SHAP bar chart
-    fig, ax = plt.subplots(figsize=(8, 3))
-    shap.plots.bar(shap_values, show=False)
-    st.pyplot(fig)
+    try:
+        explainer = shap.Explainer(model, feature_names=["PM2.5", "PM10", "NO2", "SO2", "CO", "Ozone"])
+        shap_values = explainer(input_data)
+
+        # SHAP waterfall plot
+        fig = shap.plots.waterfall(shap_values[0], show=False)
+        st.pyplot(bbox_inches='tight')
+        plt.clf()
+
+    except Exception as e:
+        st.warning(f"SHAP explanation could not be generated: {e}")
 
 # Info section
 with st.expander("ℹ️ About AQI Categories"):
@@ -63,12 +68,9 @@ with st.expander("ℹ️ About AQI Categories"):
 - **Poor (201–300)**: Breathing discomfort  
 - **Very Poor (301–400)**: Respiratory illness  
 - **Severe (401–500)**: Affects healthy people  
-""")
+    """)
 
 # Footer
 st.markdown("---")
-st.caption("Created by Alok Tungal | Powered by Random Forest 🌳")
-
-
-
+st.caption("Created by Alok Tungal | Powered by Random Forest 🌳 + SHAP Explainability")
 
