@@ -43,27 +43,40 @@ if st.button("🔮 Predict AQI Category"):
     emoji = color_map.get(pred_label, "❓")
     st.success(f"{emoji} **{pred_label}**")
 
-    # SHAP explanation
+       # SHAP explanation
     st.markdown("---")
     st.markdown("📊 **Feature Contribution (SHAP Visualization)**")
 
     try:
-        explainer = shap.TreeExplainer(model)
-        shap_values = explainer.shap_values(input_data)
+        explainer = shap.Explainer(model, feature_names=["PM2.5", "PM10", "NO₂", "SO₂", "CO", "Ozone"])
+        shap_values = explainer(input_data)
 
-        # Get predicted class index
-        class_index = pred_encoded  # this is the class predicted by the model
+        # Check if it's multiclass (returns (n_samples, n_classes, n_features))
+        if len(shap_values.values.shape) == 3:
+            class_index = pred_encoded  # Get SHAP values for predicted class
+            class_shap = shap_values.values[0][class_index]
 
-        st.markdown("📉 **Waterfall Plot for Predicted Class**")
-        fig1, ax1 = plt.subplots(figsize=(10, 4))
-        shap.plots._waterfall.waterfall_legacy(
-            explainer.expected_value[class_index],
-            shap_values[class_index][0],
-            feature_names=["PM2.5", "PM10", "NO₂", "SO₂", "CO", "Ozone"],
-            features=input_data[0]
-        )
-        st.pyplot(fig1)
-        plt.clf()
+            fig1, ax1 = plt.subplots(figsize=(10, 4))
+            shap.plots._waterfall.waterfall_legacy(
+                explainer.expected_value[class_index],
+                class_shap,
+                feature_names=explainer.feature_names,
+                features=input_data[0]
+            )
+            st.pyplot(fig1)
+            plt.clf()
+
+        else:
+            # Binary or regression
+            fig1, ax1 = plt.subplots(figsize=(10, 4))
+            shap.plots._waterfall.waterfall_legacy(
+                explainer.expected_value,
+                shap_values.values[0],
+                feature_names=explainer.feature_names,
+                features=input_data[0]
+            )
+            st.pyplot(fig1)
+            plt.clf()
 
     except Exception as e:
         st.warning(f"⚠️ SHAP explanation could not be generated: {e}")
@@ -82,5 +95,6 @@ with st.expander("ℹ️ About AQI Categories"):
 # Footer
 st.markdown("---")
 st.caption("Created by Alok Tungal | Powered by Random Forest 🌳 + SHAP Explainability")
+
 
 
