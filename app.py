@@ -287,6 +287,67 @@ if st.button("🔮 Predict AQI Category", key="predict_aqi"):
         st.warning("No health tips available for this AQI category.")
 
 
+    import pandas as pd
+import matplotlib.pyplot as plt
+
+# 📊 Step 7A: Historical Comparison Chart
+st.markdown("### 📉 Compare Your Values with Delhi's Historical Averages")
+
+# Historical averages for Delhi (assumed)
+historical_avg = {
+    "PM2.5": 90,
+    "PM10": 160,
+    "NO₂": 35,
+    "SO₂": 12,
+    "CO": 1.0,
+    "Ozone": 25
+}
+
+pollutants = ["PM2.5", "PM10", "NO₂", "SO₂", "CO", "Ozone"]
+your_values = [pm25, pm10, no2, so2, co, ozone]
+average_values = [historical_avg[p] for p in pollutants]
+
+# Create DataFrame
+df_compare = pd.DataFrame({
+    "Pollutant": pollutants,
+    "Your Input": your_values,
+    "Delhi Avg": average_values
+})
+
+# Plotting
+fig, ax = plt.subplots(figsize=(8, 5))
+df_compare.set_index("Pollutant").plot(kind="bar", ax=ax)
+plt.title("Your Pollution Levels vs Delhi Averages")
+plt.ylabel("Concentration")
+plt.xticks(rotation=0)
+plt.grid(axis="y")
+st.pyplot(fig)
+plt.clf()
+
+
+with st.expander("📘 Know Your Pollutants – Short Guide"):
+    st.markdown("""
+### 🧪 Pollutants and Their Effects
+
+- **PM2.5 / PM10**  
+  These are fine dust particles that penetrate deep into the lungs and bloodstream. Long-term exposure can cause asthma, heart disease, and reduced lung function.
+
+- **NO₂ (Nitrogen Dioxide)**  
+  Causes inflammation of the lungs, increased susceptibility to respiratory infections, and affects lung development in children.
+
+- **SO₂ (Sulfur Dioxide)**  
+  Causes throat irritation, coughing, and can worsen asthma. Exposure is more dangerous during heavy physical activity.
+
+- **CO (Carbon Monoxide)**  
+  A silent killer — reduces oxygen delivery to organs. High levels can cause dizziness, unconsciousness, or even death in closed spaces.
+
+- **Ozone (O₃)**  
+  Ground-level ozone forms smog. It irritates airways, triggers asthma, and reduces lung capacity.
+
+✅ **Tip:** Wear N95 masks in poor air, use air purifiers indoors, and track AQI before going out.
+    """)
+
+    
     # ✅ Downloadable AQI Report
     import io
     report_text = f"""
@@ -336,51 +397,4 @@ st.line_chart(df_trend.set_index("Date"), use_container_width=True)
 # Add a mini table below
 st.dataframe(df_trend.rename(columns={"Date": "📅 Date", "AQI": "🌫️ AQI Value"}), use_container_width=True)
 
-
-
-# ✅ Health-based recommendation
-def get_health_recommendation(aqi_category):
-    recs = {
-        "Good": "🟢 Air is clean. Great day to be outside!",
-        "Satisfactory": "🟡 Slight discomfort for sensitive groups. Stay hydrated.",
-        "Moderate": "🟠 Some pollutants in the air. Limit outdoor activity if sensitive.",
-        "Poor": "🔴 Avoid prolonged outdoor exertion. Consider wearing a mask.",
-        "Very Poor": "🟣 Respiratory issues likely. Use air purifiers indoors.",
-        "Severe": "⚫️ Serious risk to health. Stay indoors and avoid all physical activity."
-    }
-    return recs.get(aqi_category, "ℹ️ Stay updated on air quality alerts.")
-
-# ✅ Show health advice
-st.markdown("### 🩺 Health Recommendation:")
-st.info(get_health_recommendation(pred_label))
-
-
-# ✅ Historical AQI averages for Delhi
-historical_avg = {
-    "PM2.5": 90,
-    "PM10": 160,
-    "NO₂": 35,
-    "SO₂": 12,
-    "CO": 1.0,
-    "Ozone": 25
-}
-
-st.markdown("### 📊 Historical Delhi AQI Levels (vs Your Input):")
-st.write(f"**PM2.5:** {pm25} µg/m³ (vs avg {historical_avg['PM2.5']} µg/m³)")
-st.write(f"**PM10:** {pm10} µg/m³ (vs avg {historical_avg['PM10']} µg/m³)")
-st.write(f"**NO₂:** {no2} µg/m³ (vs avg {historical_avg['NO₂']} µg/m³)")
-st.write(f"**SO₂:** {so2} µg/m³ (vs avg {historical_avg['SO₂']} µg/m³)")
-st.write(f"**CO:** {co} mg/m³ (vs avg {historical_avg['CO']} mg/m³)")
-st.write(f"**Ozone:** {ozone} µg/m³ (vs avg {historical_avg['Ozone']} µg/m³)")
-
-
-# ✅ Pollutant impact info
-with st.expander("💡 Understand the Pollutants"):
-    st.markdown("""
-- **PM2.5 / PM10:** Tiny particles that can enter lungs and bloodstream. Trigger respiratory and heart issues.
-- **NO₂ (Nitrogen Dioxide):** Harmful to lungs; can cause inflammation and asthma.
-- **SO₂ (Sulfur Dioxide):** Can trigger bronchitis, asthma attacks, and throat irritation.
-- **CO (Carbon Monoxide):** Reduces oxygen flow in the body; harmful in enclosed areas.
-- **Ozone (O₃):** Major component of smog. Causes coughing, shortness of breath, and chest pain.
-    """)
 
