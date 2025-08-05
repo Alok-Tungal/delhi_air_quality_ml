@@ -287,7 +287,7 @@ if st.button("🔮 Predict AQI Category", key="predict_aqi"):
         st.warning("No health tips available for this AQI category.")
 
 
-    import pandas as pd
+import pandas as pd
 import matplotlib.pyplot as plt
 
 # 📊 Step 7A: Historical Comparison Chart
@@ -396,5 +396,6 @@ st.line_chart(df_trend.set_index("Date"), use_container_width=True)
 
 # Add a mini table below
 st.dataframe(df_trend.rename(columns={"Date": "📅 Date", "AQI": "🌫️ AQI Value"}), use_container_width=True)
+
 
 
