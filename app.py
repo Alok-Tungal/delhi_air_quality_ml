@@ -261,13 +261,14 @@ CO: {co} mg/m³
 Ozone: {ozone} µg/m³
 """
     buffer = io.StringIO()
-    buffer.write(report_text)
-    buffer.seek(0)
+   report_data = io.StringIO()
+report_data.write(report_text)
+report_string = report_data.getvalue()
 
-    st.download_button(
-        label="📥 Download AQI Report",
-        data=buffer,
-        file_name="aqi_report.txt",
-        mime="text/plain",
-        key="download_report"
-    )
+st.download_button(
+    label="📥 Download AQI Report",
+    data=report_string,  # 👈 FIXED: this is string, not object
+    file_name="aqi_report.txt",
+    mime="text/plain",
+    key="download_report"
+)
