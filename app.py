@@ -158,12 +158,12 @@ selected_category = st.selectbox(
 )
 
 preset_values = {
-    "Good": [25, 40, 20, 5, 0.8, 10],
-    "Satisfactory": [60, 70, 30, 8, 1.0, 15],
-    "Moderate": [110, 150, 50, 15, 1.5, 25],
-    "Poor": [180, 250, 80, 25, 2.0, 35],
-    "Very Poor": [310, 400, 110, 40, 2.5, 60],
-    "Severe": [420, 500, 150, 60, 3.0, 90]
+    "Good": [25.0, 40.0, 20.0, 5.0, 0.8, 10.0],
+    "Satisfactory": [60.0, 70.0, 30.0, 8.0, 1.0, 15.0],
+    "Moderate": [110.0, 150.0, 50.0, 15.0, 1.5, 25.0],
+    "Poor": [180.0, 250.0, 80.0, 25.0, 2.0, 35.0],
+    "Very Poor": [310.0, 400.0, 110.0, 40.0, 2.5, 60.0],
+    "Severe": [420.0, 500.0, 150.0, 60.0, 3.0, 90.0]
 }
 
 # Set default values
@@ -179,6 +179,7 @@ with col2:
     pm10 = st.number_input("PM10 (µg/m³)", min_value=0.0, value=default_values[1])
     so2 = st.number_input("SO₂ (µg/m³)", min_value=0.0, value=default_values[3])
     ozone = st.number_input("Ozone (µg/m³)", min_value=0.0, value=default_values[5])
+
 
 
 
