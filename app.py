@@ -25,42 +25,51 @@ with col2:
     ozone = st.number_input("Ozone (µg/m³)", min_value=0.0, value=20.0)
 
 # Predict button
-if st.button("🔮 Predict AQI Category"):
+if st.button("\ud83d\udd2e Predict AQI Category"):
     input_data = np.array([[pm25, pm10, no2, so2, co, ozone]])
     pred_encoded = model.predict(input_data)[0]
     pred_label = label_encoder.inverse_transform([pred_encoded])[0]
 
     # Result display
-    st.subheader("📌 Predicted AQI Category:")
+    st.subheader("\ud83d\udccc Predicted AQI Category:")
     color_map = {
-        "Good": "🟢",
-        "Satisfactory": "🟡",
-        "Moderate": "🟠",
-        "Poor": "🔴",
-        "Very Poor": "🟣",
-        "Severe": "⚫️"
+        "Good": "\ud83d\udfe2",
+        "Satisfactory": "\ud83d\udfe1",
+        "Moderate": "\ud83d\udfe0",
+        "Poor": "\ud83d\udd34",
+        "Very Poor": "\ud83d\udd23",
+        "Severe": "\u26ab\ufe0f"
     }
-    emoji = color_map.get(pred_label, "❓")
+    emoji = color_map.get(pred_label, "\u2753")
     st.success(f"{emoji} **{pred_label}**")
 
     # SHAP explanation
     st.markdown("---")
-    st.markdown("📊 **Feature Contribution (SHAP Visualization)**")
+    st.markdown("\ud83d\udcca **Feature Contribution (SHAP Visualization)**")
 
     try:
         explainer = shap.Explainer(model, feature_names=["PM2.5", "PM10", "NO2", "SO2", "CO", "Ozone"])
         shap_values = explainer(input_data)
 
-        # SHAP waterfall plot
-        fig = shap.plots.waterfall(shap_values[0], show=False)
-        st.pyplot(bbox_inches='tight')
+        # Waterfall Plot
+        st.markdown("\ud83d\udcc9 **Waterfall Plot for Explanation**")
+        fig1, ax1 = plt.subplots(figsize=(10, 4))
+        shap.plots.waterfall(shap_values[0], show=False)
+        st.pyplot(fig1)
         plt.clf()
 
+        # Optional: Bar Plot
+        if st.checkbox("Show SHAP Bar Plot"):
+            fig2, ax2 = plt.subplots(figsize=(10, 4))
+            shap.plots.bar(shap_values, show=False)
+            st.pyplot(fig2)
+            plt.clf()
+
     except Exception as e:
-        st.warning(f"SHAP explanation could not be generated: {e}")
+        st.warning(f"\u26a0\ufe0f SHAP explanation could not be generated: {e}")
 
 # Info section
-with st.expander("ℹ️ About AQI Categories"):
+with st.expander("\u2139\ufe0f About AQI Categories"):
     st.markdown("""
 - **Good (0–50)**: Minimal impact  
 - **Satisfactory (51–100)**: Minor breathing discomfort  
@@ -72,5 +81,4 @@ with st.expander("ℹ️ About AQI Categories"):
 
 # Footer
 st.markdown("---")
-st.caption("Created by Alok Tungal | Powered by Random Forest 🌳 + SHAP Explainability")
-
+st.caption("Created by Alok Tungal | Powered by Random Forest \ud83c\udf33 + SHAP Explainability")
