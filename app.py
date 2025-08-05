@@ -338,4 +338,49 @@ st.dataframe(df_trend.rename(columns={"Date": "📅 Date", "AQI": "🌫️ AQI V
 
 
 
+# ✅ Health-based recommendation
+def get_health_recommendation(aqi_category):
+    recs = {
+        "Good": "🟢 Air is clean. Great day to be outside!",
+        "Satisfactory": "🟡 Slight discomfort for sensitive groups. Stay hydrated.",
+        "Moderate": "🟠 Some pollutants in the air. Limit outdoor activity if sensitive.",
+        "Poor": "🔴 Avoid prolonged outdoor exertion. Consider wearing a mask.",
+        "Very Poor": "🟣 Respiratory issues likely. Use air purifiers indoors.",
+        "Severe": "⚫️ Serious risk to health. Stay indoors and avoid all physical activity."
+    }
+    return recs.get(aqi_category, "ℹ️ Stay updated on air quality alerts.")
+
+# ✅ Show health advice
+st.markdown("### 🩺 Health Recommendation:")
+st.info(get_health_recommendation(pred_label))
+
+
+# ✅ Historical AQI averages for Delhi
+historical_avg = {
+    "PM2.5": 90,
+    "PM10": 160,
+    "NO₂": 35,
+    "SO₂": 12,
+    "CO": 1.0,
+    "Ozone": 25
+}
+
+st.markdown("### 📊 Historical Delhi AQI Levels (vs Your Input):")
+st.write(f"**PM2.5:** {pm25} µg/m³ (vs avg {historical_avg['PM2.5']} µg/m³)")
+st.write(f"**PM10:** {pm10} µg/m³ (vs avg {historical_avg['PM10']} µg/m³)")
+st.write(f"**NO₂:** {no2} µg/m³ (vs avg {historical_avg['NO₂']} µg/m³)")
+st.write(f"**SO₂:** {so2} µg/m³ (vs avg {historical_avg['SO₂']} µg/m³)")
+st.write(f"**CO:** {co} mg/m³ (vs avg {historical_avg['CO']} mg/m³)")
+st.write(f"**Ozone:** {ozone} µg/m³ (vs avg {historical_avg['Ozone']} µg/m³)")
+
+
+# ✅ Pollutant impact info
+with st.expander("💡 Understand the Pollutants"):
+    st.markdown("""
+- **PM2.5 / PM10:** Tiny particles that can enter lungs and bloodstream. Trigger respiratory and heart issues.
+- **NO₂ (Nitrogen Dioxide):** Harmful to lungs; can cause inflammation and asthma.
+- **SO₂ (Sulfur Dioxide):** Can trigger bronchitis, asthma attacks, and throat irritation.
+- **CO (Carbon Monoxide):** Reduces oxygen flow in the body; harmful in enclosed areas.
+- **Ozone (O₃):** Major component of smog. Causes coughing, shortness of breath, and chest pain.
+    """)
 
