@@ -1,6 +1,6 @@
 import numpy as np
 
-# Fix for deprecated np.bool in SHAP
+# ✅ Fix for deprecated np.bool in SHAP + NumPy conflict
 if not hasattr(np, 'bool'):
     np.bool = bool
 
@@ -13,12 +13,12 @@ import matplotlib.pyplot as plt
 model = joblib.load("aqi_rf_model (1).joblib")
 label_encoder = joblib.load("label_encoder (3).joblib")
 
-# Configure the page
+# Page config
 st.set_page_config(page_title="Delhi AQI Predictor 🌫️", layout="centered")
 st.title("🌫️ Delhi Air Quality Index (AQI) Predictor")
 st.markdown("Enter pollutant levels to predict the AQI **Category**.")
 
-# Input fields
+# Input layout
 col1, col2 = st.columns(2)
 with col1:
     pm25 = st.number_input("PM2.5 (µg/m³)", min_value=0.0, value=120.0)
@@ -29,16 +29,13 @@ with col2:
     so2 = st.number_input("SO₂ (µg/m³)", min_value=0.0, value=10.0)
     ozone = st.number_input("Ozone (µg/m³)", min_value=0.0, value=20.0)
 
-# Prediction and SHAP
+# Predict button
 if st.button("🔮 Predict AQI Category"):
-    # Prepare input
     input_data = np.array([[pm25, pm10, no2, so2, co, ozone]])
-
-    # Predict
     pred_encoded = model.predict(input_data)[0]
     pred_label = label_encoder.inverse_transform([pred_encoded])[0]
 
-    # Display prediction
+    # Result display
     st.subheader("📌 Predicted AQI Category:")
     color_map = {
         "Good": "🟢",
@@ -51,7 +48,7 @@ if st.button("🔮 Predict AQI Category"):
     emoji = color_map.get(pred_label, "❓")
     st.success(f"{emoji} **{pred_label}**")
 
-    # SHAP Visual Explanation
+    # SHAP explanation
     st.markdown("---")
     st.markdown("📊 **Feature Contribution (SHAP Visualization)**")
 
@@ -59,19 +56,12 @@ if st.button("🔮 Predict AQI Category"):
         explainer = shap.Explainer(model, feature_names=["PM2.5", "PM10", "NO2", "SO2", "CO", "Ozone"])
         shap_values = explainer(input_data)
 
-        # Waterfall plot
+        # ✅ SHAP Waterfall plot — only pass shap_values[0]
         st.markdown("📉 Waterfall Plot:")
-        fig1, ax1 = plt.subplots(figsize=(10, 4))
+        fig, ax = plt.subplots(figsize=(10, 4))
         shap.plots.waterfall(shap_values[0], show=False)
-        st.pyplot(fig1)
+        st.pyplot(fig)
         plt.clf()
-
-        # Optional: bar plot
-        if st.checkbox("Show SHAP Bar Plot"):
-            fig2, ax2 = plt.subplots(figsize=(10, 4))
-            shap.plots.bar(shap_values, show=False)
-            st.pyplot(fig2)
-            plt.clf()
 
     except Exception as e:
         st.warning(f"⚠️ SHAP explanation could not be generated: {e}")
@@ -90,4 +80,3 @@ with st.expander("ℹ️ About AQI Categories"):
 # Footer
 st.markdown("---")
 st.caption("Created by Alok Tungal | Powered by Random Forest 🌳 + SHAP Explainability")
-
