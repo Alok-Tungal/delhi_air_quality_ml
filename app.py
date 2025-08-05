@@ -109,7 +109,7 @@ if submitted:
     }
     emoji = emoji_map.get(pred_label, "❓")
 
-    st.markdown(f"### 📌 Predicted AQI Category: {emoji} **{pred_label}**")
+    st.markdown(f"### 📌 **Predicted AQI Category**: {emoji} **{pred_label}**")
 
     st.markdown("---")
     st.markdown("📊 **SHAP Explainability**")
@@ -145,4 +145,5 @@ if submitted:
 
     except Exception as e:
         st.warning(f"⚠️ SHAP explanation failed: {e}")
+
 
