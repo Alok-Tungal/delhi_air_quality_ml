@@ -465,11 +465,7 @@ from PIL import Image
 import urllib.parse
 import os
 
-# ✅ Safely retrieve values
-emoji = st.session_state.get("emoji", "❓")
-pred_label = st.session_state.get("pred_label", "Unknown")
-
-# ✅ Build AQI summary
+# ✅ Prepare AQI summary (you can also post this to GitHub Gist / Pastebin manually)
 summary_text = f"""
 📍 Delhi AQI Report
 
@@ -484,23 +480,23 @@ Pollutants:
 - Ozone: {ozone} µg/m³
 """
 
-# ✅ Generate QR code and save image
-qr_img = qrcode.make(summary_text)
-qr_path = "aqi_summary_qr.png"
-qr_img.save(qr_path)
+# ✅ Use a sharable paste link (simulate Pastebin/GitHub Gist, replace with actual if needed)
+paste_url = "https://gist.github.com/your_gist_link_here"  # Replace with your real shareable link
 
-# ✅ Display QR in Streamlit
-st.markdown("### 📲 Share via QR Code")
-st.image(qr_path, caption="📷 Scan to view AQI Summary", use_container_width=True)
+# ✅ Generate QR code for the link
+qr = qrcode.make(paste_url)
+qr_path = "aqi_qr_upgraded.png"
+qr.save(qr_path)
 
-# ✅ Build tweet text
-message = f"Delhi AQI today is {pred_label} {emoji}. Check your pollution levels! #AQI #AirQuality"
-tweet_url = f"https://twitter.com/intent/tweet?text={urllib.parse.quote(message)}"
+# ✅ Show in Streamlit
+st.markdown("### 📲 Share This AQI Summary via QR Code")
+st.image(qr_path, caption="🔗 Scan to open AQI Report", use_container_width=True)
+
+# ✅ Social Media Share
+tweet_text = f"Delhi AQI today is {pred_label} {emoji}. Check pollution levels here: {paste_url} #AQI #AirQuality"
+tweet_url = f"https://twitter.com/intent/tweet?text={urllib.parse.quote(tweet_text)}"
 
 st.markdown("### 📤 Share on Social Media")
-st.markdown(f"[🐦 Share on Twitter]({tweet_url})", unsafe_allow_html=True)
+st.markdown(f"[🐦 Tweet This Report]({tweet_url})", unsafe_allow_html=True)
 
-# ✅ Optional: Remove QR image after use (cleanup)
-if os.path.exists(qr_path):
-    os.remove(qr_path)
 
