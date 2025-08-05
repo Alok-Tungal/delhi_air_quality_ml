@@ -248,7 +248,7 @@ if st.button("🔮 Predict AQI Category"):
 
     # ✅ Downloadable AQI Report
 import io
-    report_text = f"""
+report_text = f"""
 Delhi AQI Prediction Report
 -----------------------------
 📌 AQI Category: {emoji} {pred_label}
@@ -272,3 +272,4 @@ Ozone: {ozone} µg/m³
         mime="text/plain",
         key="download_report"
     )
+
