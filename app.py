@@ -463,6 +463,9 @@ st.dataframe(df_trend.rename(columns={"Date": "📅 Date", "AQI": "🌫️ AQI V
 import qrcode
 from PIL import Image
 
+st.session_state.pred_label = pred_label
+st.session_state.emoji = emoji
+
 # AQI Summary text
 summary_text = f"""
 📍 Delhi AQI Report
@@ -478,10 +481,14 @@ Pollutants:
 - Ozone: {ozone} µg/m³
 """
 
+emoji = st.session_state.get("emoji", "❓")
+pred_label = st.session_state.get("pred_label", "Unknown")
+
 # Generate QR code
 qr_img = qrcode.make(summary_text)
 qr_path = "aqi_summary_qr.png"
 qr_img.save(qr_path)
+
 
 # Display in app
 st.markdown("### 📲 Share via QR Code")
@@ -495,5 +502,6 @@ tweet_url = f"https://twitter.com/intent/tweet?text={urllib.parse.quote(message)
 
 st.markdown("### 📤 Share on Social Media")
 st.markdown(f"[🐦 Share on Twitter]({tweet_url})", unsafe_allow_html=True)
+
 
 
