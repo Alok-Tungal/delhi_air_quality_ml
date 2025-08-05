@@ -235,7 +235,7 @@ st.markdown("---")
 summary = f"""
 Delhi AQI Prediction Report
 -----------------------------
-AQI Category: {pred_label}
+st.success(f"📌 AQI Category: {pred_label}")
 Emoji: {emoji}
 -----------------------------
 Pollutant Levels:
@@ -250,6 +250,7 @@ import io
 buffer = io.StringIO()
 buffer.write(summary)
 st.download_button("📥 Download AQI Report", buffer.getvalue(), file_name="aqi_report.txt")
+
 
 
 
