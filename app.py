@@ -183,6 +183,72 @@ with col2:
 
 
 
+st.markdown("#### 🔁 Choose a Preset AQI Level or Enter Custom Values")
+
+preset_values = {
+    "Good": [30, 40, 20, 5, 0.4, 10],
+    "Moderate": [90, 110, 40, 10, 1.2, 30],
+    "Poor": [200, 250, 90, 20, 2.0, 50],
+    "Very Poor": [300, 350, 120, 30, 3.5, 70],
+    "Severe": [400, 500, 150, 40, 4.5, 90],
+}
+
+selected_level = st.selectbox("Choose Preset AQI Level", list(preset_values.keys()))
+default_values = preset_values[selected_level]
+default_values = list(map(float, default_values))  # Fix type mismatch
+
+
+col1, col2 = st.columns(2)
+with col1:
+    pm25 = st.number_input("PM2.5 (µg/m³)", min_value=0.0, value=default_values[0])
+    no2 = st.number_input("NO₂ (µg/m³)", min_value=0.0, value=default_values[2])
+    co = st.number_input("CO (mg/m³)", min_value=0.0, value=default_values[4])
+with col2:
+    pm10 = st.number_input("PM10 (µg/m³)", min_value=0.0, value=default_values[1])
+    so2 = st.number_input("SO₂ (µg/m³)", min_value=0.0, value=default_values[3])
+    ozone = st.number_input("Ozone (µg/m³)", min_value=0.0, value=default_values[5])
+
+
+
+st.markdown("### 📋 Your Entered Pollution Levels:")
+st.info(f"""
+- **PM2.5:** {pm25} µg/m³
+- **PM10:** {pm10} µg/m³
+- **NO₂:** {no2} µg/m³
+- **SO₂:** {so2} µg/m³
+- **CO:** {co} mg/m³
+- **Ozone:** {ozone} µg/m³
+""")
+
+
+
+if pm25 > 250 or pm10 > 300:
+    st.warning("⚠️ High levels of PM detected. Stay indoors if possible.")
+elif pm25 < 50 and pm10 < 50:
+    st.success("✅ Air looks clean today! Great time for a walk.")
+
+
+import io
+
+summary = f"""
+Delhi AQI Prediction Report
+-----------------------------
+AQI Category: {pred_label}
+Emoji: {emoji}
+-----------------------------
+Pollutant Levels:
+PM2.5: {pm25} µg/m³
+PM10: {pm10} µg/m³
+NO₂: {no2} µg/m³
+SO₂: {so2} µg/m³
+CO: {co} mg/m³
+Ozone: {ozone} µg/m³
+"""
+
+buffer = io.StringIO()
+buffer.write(summary)
+st.download_button("📥 Download Report", buffer.getvalue(), file_name="aqi_report.txt")
+
 
 
 
