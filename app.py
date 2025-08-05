@@ -460,3 +460,40 @@ st.line_chart(df_trend.set_index("Date"), use_container_width=True)
 # Add a mini table below
 st.dataframe(df_trend.rename(columns={"Date": "📅 Date", "AQI": "🌫️ AQI Value"}), use_container_width=True)
 
+import qrcode
+from PIL import Image
+import streamlit.components.v1 as components
+
+# Generate summary again (or reuse your variable if already exists)
+summary_text = f"""
+📍 Delhi AQI Report
+
+📌 AQI Category: {emoji} {pred_label}
+
+Pollutants:
+- PM2.5: {pm25} µg/m³
+- PM10: {pm10} µg/m³
+- NO₂: {no2} µg/m³
+- SO₂: {so2} µg/m³
+- CO: {co} mg/m³
+- Ozone: {ozone} µg/m³
+"""
+
+# Generate QR
+qr = qrcode.make(summary_text)
+qr_path = "aqi_qr.png"
+qr.save(qr_path)
+
+# Show QR Code
+st.markdown("### 📲 Share via QR Code")
+st.image(qr_path, caption="Scan to view AQI Summary", use_column_width=False)
+
+
+import urllib.parse
+
+message = f"Delhi AQI today is {pred_label} {emoji}. Check your pollution levels! #AQI #AirQuality"
+tweet_url = f"https://twitter.com/intent/tweet?text={urllib.parse.quote(message)}"
+
+st.markdown("### 📤 Share on Social Media")
+st.markdown(f"[🐦 Share on Twitter]({tweet_url})", unsafe_allow_html=True)
+
