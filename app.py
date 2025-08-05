@@ -55,7 +55,7 @@ if st.button("Predict AQI Category"):
         # ✅ SHAP Waterfall Plot
         st.markdown("📉 Waterfall Plot:")
         fig1, ax1 = plt.subplots(figsize=(10, 4))
-        shap.plots.waterfall(shap_values[0],0)
+        shap.plots.waterfall(shap_values[0,0])
         st.pyplot(fig1)
         plt.clf()
 
@@ -83,4 +83,5 @@ with st.expander("ℹ️ About AQI Categories"):
 # 📎 Footer
 st.markdown("---")
 st.caption("Created by Alok Tungal | Powered by Random Forest 🌳 + SHAP Explainability")
+
 
