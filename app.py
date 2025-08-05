@@ -48,7 +48,8 @@ if st.button("Predict AQI Category"):
     st.markdown("---")
     st.markdown("📊 **Feature Contribution using SHAP**")
 
-   try:
+
+try:
     explainer = shap.Explainer(model, feature_names=["PM2.5", "PM10", "NO2", "SO2", "CO", "Ozone"])
     shap_values = explainer(input_data)
 
@@ -65,6 +66,7 @@ if st.button("Predict AQI Category"):
 except Exception as e:
     st.warning(f"⚠️ SHAP explanation could not be generated: {e}")
 
+
 # ℹ️ Information section
 with st.expander("ℹ️ About AQI Categories"):
     st.markdown("""
@@ -79,6 +81,7 @@ with st.expander("ℹ️ About AQI Categories"):
 # 📎 Footer
 st.markdown("---")
 st.caption("Created by Alok Tungal | Powered by Random Forest 🌳 + SHAP Explainability")
+
 
 
 
