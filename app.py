@@ -8,12 +8,12 @@ import matplotlib.pyplot as plt
 model = joblib.load("aqi_rf_model (1).joblib")
 label_encoder = joblib.load("label_encoder (3).joblib")
 
-# Page config
+# 🎨 Page configuration
 st.set_page_config(page_title="Delhi AQI Predictor 🌫️", layout="centered")
 st.title("🌫️ Delhi Air Quality Index (AQI) Predictor")
 st.markdown("Enter pollutant levels to predict the AQI **Category**.")
 
-# Input layout
+# 🧾 Input layout
 col1, col2 = st.columns(2)
 with col1:
     pm25 = st.number_input("PM2.5 (µg/m³)", min_value=0.0, value=120.0)
@@ -24,41 +24,42 @@ with col2:
     so2 = st.number_input("SO₂ (µg/m³)", min_value=0.0, value=10.0)
     ozone = st.number_input("Ozone (µg/m³)", min_value=0.0, value=20.0)
 
-# Predict button
-if st.button("\ud83d\udd2e Predict AQI Category"):
+# 🟢 Prediction button
+st.markdown("### 🔮 Click the button to predict AQI category:")
+if st.button("Predict AQI Category"):
     input_data = np.array([[pm25, pm10, no2, so2, co, ozone]])
     pred_encoded = model.predict(input_data)[0]
     pred_label = label_encoder.inverse_transform([pred_encoded])[0]
 
-    # Result display
-    st.subheader("\ud83d\udccc Predicted AQI Category:")
+    # 🧾 Display result
+    st.subheader("📌 Predicted AQI Category:")
     color_map = {
-        "Good": "\ud83d\udfe2",
-        "Satisfactory": "\ud83d\udfe1",
-        "Moderate": "\ud83d\udfe0",
-        "Poor": "\ud83d\udd34",
-        "Very Poor": "\ud83d\udd23",
-        "Severe": "\u26ab\ufe0f"
+        "Good": "🟢",
+        "Satisfactory": "🟡",
+        "Moderate": "🟠",
+        "Poor": "🔴",
+        "Very Poor": "🟣",
+        "Severe": "⚫️"
     }
-    emoji = color_map.get(pred_label, "\u2753")
+    emoji = color_map.get(pred_label, "❓")
     st.success(f"{emoji} **{pred_label}**")
 
-    # SHAP explanation
+    # 📊 SHAP Explanation
     st.markdown("---")
-    st.markdown("\ud83d\udcca **Feature Contribution (SHAP Visualization)**")
+    st.markdown("📊 **Feature Contribution using SHAP**")
 
     try:
         explainer = shap.Explainer(model, feature_names=["PM2.5", "PM10", "NO2", "SO2", "CO", "Ozone"])
         shap_values = explainer(input_data)
 
-        # Waterfall Plot
-        st.markdown("\ud83d\udcc9 **Waterfall Plot for Explanation**")
+        # ✅ SHAP Waterfall Plot
+        st.markdown("📉 Waterfall Plot:")
         fig1, ax1 = plt.subplots(figsize=(10, 4))
         shap.plots.waterfall(shap_values[0], show=False)
         st.pyplot(fig1)
         plt.clf()
 
-        # Optional: Bar Plot
+        # ✅ Optional Bar Plot
         if st.checkbox("Show SHAP Bar Plot"):
             fig2, ax2 = plt.subplots(figsize=(10, 4))
             shap.plots.bar(shap_values, show=False)
@@ -66,10 +67,10 @@ if st.button("\ud83d\udd2e Predict AQI Category"):
             plt.clf()
 
     except Exception as e:
-        st.warning(f"\u26a0\ufe0f SHAP explanation could not be generated: {e}")
+        st.warning(f"⚠️ SHAP explanation could not be generated: {e}")
 
-# Info section
-with st.expander("\u2139\ufe0f About AQI Categories"):
+# ℹ️ Information section
+with st.expander("ℹ️ About AQI Categories"):
     st.markdown("""
 - **Good (0–50)**: Minimal impact  
 - **Satisfactory (51–100)**: Minor breathing discomfort  
@@ -79,6 +80,6 @@ with st.expander("\u2139\ufe0f About AQI Categories"):
 - **Severe (401–500)**: Affects healthy people  
     """)
 
-# Footer
+# 📎 Footer
 st.markdown("---")
-st.caption("Created by Alok Tungal | Powered by Random Forest \ud83c\udf33 + SHAP Explainability")
+st.caption("Created by Alok Tungal | Powered by Random Forest 🌳 + SHAP Explainability")
