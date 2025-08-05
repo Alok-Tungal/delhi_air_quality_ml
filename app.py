@@ -350,23 +350,23 @@ with st.expander("📘 Know Your Pollutants – Short Guide"):
     
     # ✅ Downloadable AQI Report
     if st.button("🔮 Predict AQI Category", key="predict_button"):
-    input_data = np.array([[pm25, pm10, no2, so2, co, ozone]])
-    pred_encoded = model.predict(input_data)[0]
-    pred_label = label_encoder.inverse_transform([pred_encoded])[0]
-
-    # Define emoji here
-    color_map = {
-        "Good": "🟢",
-        "Satisfactory": "🟡",
-        "Moderate": "🟠",
-        "Poor": "🔴",
-        "Very Poor": "🟣",
-        "Severe": "⚫️"
-    }
-    emoji = color_map.get(pred_label, "❓")
-
-    # Now safe to use
-    st.markdown(f"### 📌 AQI Category: {emoji} **{pred_label}**")
+        input_data = np.array([[pm25, pm10, no2, so2, co, ozone]])
+        pred_encoded = model.predict(input_data)[0]
+        pred_label = label_encoder.inverse_transform([pred_encoded])[0]
+    
+        # Define emoji here
+        color_map = {
+            "Good": "🟢",
+            "Satisfactory": "🟡",
+            "Moderate": "🟠",
+            "Poor": "🔴",
+            "Very Poor": "🟣",
+            "Severe": "⚫️"
+        }
+        emoji = color_map.get(pred_label, "❓")
+    
+        # Now safe to use
+        st.markdown(f"### 📌 AQI Category: {emoji} **{pred_label}**")
 
     import io
     report_text = f"""
@@ -415,6 +415,7 @@ st.line_chart(df_trend.set_index("Date"), use_container_width=True)
 
 # Add a mini table below
 st.dataframe(df_trend.rename(columns={"Date": "📅 Date", "AQI": "🌫️ AQI Value"}), use_container_width=True)
+
 
 
 
