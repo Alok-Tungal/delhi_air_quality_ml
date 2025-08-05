@@ -230,6 +230,8 @@ elif pm25 < 50 and pm10 < 50:
 
 import io
 
+# 📥 Download AQI report
+st.markdown("---")
 summary = f"""
 Delhi AQI Prediction Report
 -----------------------------
@@ -244,10 +246,11 @@ SO₂: {so2} µg/m³
 CO: {co} mg/m³
 Ozone: {ozone} µg/m³
 """
-
+import io
 buffer = io.StringIO()
 buffer.write(summary)
-st.download_button("📥 Download Report", buffer.getvalue(), file_name="aqi_report.txt")
+st.download_button("📥 Download AQI Report", buffer.getvalue(), file_name="aqi_report.txt")
+
 
 
 
