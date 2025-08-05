@@ -5,8 +5,8 @@ import shap
 import matplotlib.pyplot as plt
 
 # Load model and label encoder
-model = joblib.load("aqi_rf_model (1).joblib")
-label_encoder = joblib.load("label_encoder (3).joblib")
+model = joblib.load("aqi_rf_model.joblib")
+label_encoder = joblib.load("label_encoder.joblib")
 
 # Page config
 st.set_page_config(page_title="Delhi AQI Predictor 🌫️", layout="centered")
@@ -83,3 +83,4 @@ with st.expander("ℹ️ About AQI Categories"):
 # Footer
 st.markdown("---")
 st.caption("Created by Alok Tungal | Powered by Random Forest 🌳 + SHAP Explainability")
+
