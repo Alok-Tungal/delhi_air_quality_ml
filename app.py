@@ -490,13 +490,6 @@ tweet_url = f"https://twitter.com/intent/tweet?text={urllib.parse.quote(tweet_te
 st.markdown("### 📤 Share on Social Media")
 st.markdown(f"[🐦 Tweet This Report]({tweet_url})", unsafe_allow_html=True)
 
-# ✅ Show in Streamlit
-st.markdown("### 📲 Share This AQI Summary via QR Code")
-st.image(qr_path, caption="🔗 Scan to open AQI Report", use_container_width=True)
-
-
-
-
 # Generate QR Code with high box_size for clarity
 qr = qrcode.QRCode(
     version=1,
@@ -513,6 +506,9 @@ img = img.resize((300, 300), Image.LANCZOS)  # Clear and sharp
 # Display QR code with updated Streamlit parameter
 st.image(img, caption="📱 Scan to open the report", use_container_width=False)
 
+# ✅ Show in Streamlit
+st.markdown("### 📲 Share This AQI Summary via QR Code")
+st.image(qr_path, caption="🔗 Scan to open AQI Report", use_container_width=True)
 # Optional: Download QR Code
 buf = BytesIO()
 img.save(buf, format="PNG")
@@ -524,5 +520,3 @@ st.download_button(
     file_name="Delhi_AQI_QR_Code.png",
     mime="image/png"
 )
-
-
