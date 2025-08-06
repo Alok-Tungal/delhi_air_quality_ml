@@ -465,6 +465,21 @@ from PIL import Image
 import urllib.parse
 import os
 
+input_data = np.array([[pm25, pm10, no2, so2, co, ozone]])
+pred_encoded = model.predict(input_data)[0]
+pred_label = label_encoder.inverse_transform([pred_encoded])[0]
+
+color_map = {
+    "Good": "🟢",
+    "Satisfactory": "🟡",
+    "Moderate": "🟠",
+    "Poor": "🔴",
+    "Very Poor": "🟣",
+    "Severe": "⚫️"
+}
+emoji = color_map.get(pred_label, "❓")
+
+
 # ✅ Replace this with your real public URL from GitHub Gist or Pastebin
 paste_url = "https://gist.github.com/your_gist_link_here"  # ← replace with real link
 
@@ -483,6 +498,7 @@ tweet_url = f"https://twitter.com/intent/tweet?text={urllib.parse.quote(tweet_te
 
 st.markdown("### 📤 Share on Social Media")
 st.markdown(f"[🐦 Tweet This Report]({tweet_url})", unsafe_allow_html=True)
+
 
 
 
