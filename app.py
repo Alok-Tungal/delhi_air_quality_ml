@@ -481,7 +481,7 @@ emoji = color_map.get(pred_label, "❓")
 
 
 # ✅ Replace this with your real public URL from GitHub Gist or Pastebin
-paste_url = "https://gist.github.com/your_gist_link_here"  # ← replace with real link
+paste_url = "https://alokdelhiairqualityml.streamlit.app/"  # ← replace with real link
 
 # ✅ Generate QR code for that public link
 qr = qrcode.make(paste_url)
@@ -498,6 +498,7 @@ tweet_url = f"https://twitter.com/intent/tweet?text={urllib.parse.quote(tweet_te
 
 st.markdown("### 📤 Share on Social Media")
 st.markdown(f"[🐦 Tweet This Report]({tweet_url})", unsafe_allow_html=True)
+
 
 
 
