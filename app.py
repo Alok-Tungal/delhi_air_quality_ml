@@ -460,8 +460,11 @@ st.line_chart(df_trend.set_index("Date"), use_container_width=True)
 # Add a mini table below
 st.dataframe(df_trend.rename(columns={"Date": "📅 Date", "AQI": "🌫️ AQI Value"}), use_container_width=True)
 
+
 import qrcode
 from PIL import Image
+import streamlit as st
+from io import BytesIO
 import urllib.parse
 import os
 
@@ -479,57 +482,20 @@ color_map = {
 }
 emoji = color_map.get(pred_label, "❓")
 
+# ✅ Optional social media share
+tweet_text = f"Delhi AQI today is {pred_label} {emoji}. Check pollution levels here: {paste_url} #AQI #AirQuality"
+tweet_url = f"https://twitter.com/intent/tweet?text={urllib.parse.quote(tweet_text)}"
 
-# # ✅ Replace this with your real public URL from GitHub Gist or Pastebin
-paste_url = "https://alokdelhiairqualityml.streamlit.app/"  # ← replace with real link
+st.markdown("### 📤 Share on Social Media")
+st.markdown(f"[🐦 Tweet This Report]({tweet_url})", unsafe_allow_html=True)
 
-# # ✅ Generate QR code for that public link
-# qr = qrcode.make(paste_url)
-# qr_path = "aqi_qr_upgraded.png"
-# qr.save(qr_path)
+# ✅ Show in Streamlit
+st.markdown("### 📲 Share This AQI Summary via QR Code")
+st.image(qr_path, caption="🔗 Scan to open AQI Report", use_container_width=True)
 
-# # ✅ Show QR code in app
-# st.markdown("### 📲 Share This AQI Summary via QR Code")
-# st.image(qr_path, caption="🔗 Scan to open AQI Report", use_container_width=True)
-
-# import qrcode
-# from PIL import Image
-# import urllib.parse
-
-# ✅ Generate QR code
-# qr = qrcode.QRCode(
-#     version=1,  # smaller size
-#     error_correction=qrcode.constants.ERROR_CORRECT_L,
-#     box_size=6,  # smaller box = smaller image
-#     border=2     # smaller border
-# )
-# qr.add_data(paste_url)
-# qr.make(fit=Tr)ue)
-
-# # ✅ Create QR image and resize it
-# qr_img = qr.make_image(fill_color="black", back_color="white").convert("RGB")
-# qr_img = qr_img.resize((50, 50))  # Resize to 200x200 pixels
-# qr_path = "aqi_qr_resized.png"
-# qr_img.save(qr_path
-
-# # ✅ Optional social media share
-# tweet_text = f"Delhi AQI today is {pred_label} {emoji}. Check pollution levels here: {paste_url} #AQI #AirQuality"
-# tweet_url = f"https://twitter.com/intent/tweet?text={urllib.parse.quote(tweet_text)}"
-
-# st.markdown("### 📤 Share on Social Media")
-# st.markdown(f"[🐦 Tweet This Report]({tweet_url})", unsafe_allow_html=True)
-
-# # ✅ Show in Streamlit
-# st.markdown("### 📲 Share This AQI Summary via QR Code")
-# st.image(qr_path, caption="🔗 Scan to open AQI Report", use_container_width=True)
-
-import qrcode
-from PIL import Image
-import streamlit as st
-from io import BytesIO
 
 # Example: Pastebin or GitHub Gist URL
-paste_url = "https://gist.github.com/your_gist_link_here"
+paste_url = "https://alokdelhiairqualityml.streamlit.app/"
 
 # Generate QR Code with high box_size for clarity
 qr = qrcode.QRCode(
@@ -558,3 +524,4 @@ st.download_button(
     file_name="Delhi_AQI_QR_Code.png",
     mime="image/png"
 )
+
