@@ -568,114 +568,29 @@ st.markdown(f"""
 """)
 st.markdown("---")
 
+import csv
+from datetime import datetime
+import os
 
-import streamlit as st
-import qrcode
-from PIL import Image
-from io import BytesIO
-import matplotlib.pyplot as plt
+def log_prediction(inputs, aqi_category, main_pollutant, risk):
+    log_file = "aqi_logs.csv"
+    file_exists = os.path.exists(log_file)
 
-# ---------------- Page Setup ----------------
-st.set_page_config(
-    page_title="Delhi AQI Predictor",
-    layout="centered",  # 'wide' is optional, centered is better for mobile
-    initial_sidebar_state="expanded"
-)
-st.markdown("<div id='top'></div>", unsafe_allow_html=True)
-st.title("🏙️ Delhi AQI Predictor")
-st.markdown("Mobile-friendly | Streamlined | Responsive")
-
-# ---------------- Preset AQI Values ----------------
-st.markdown("### 🔁 Choose Preset or Enter Pollution Data")
-preset_values = {
-    "Good": [30, 40, 20, 5, 0.4, 10],
-    "Moderate": [90, 110, 40, 10, 1.2, 30],
-    "Poor": [200, 250, 90, 20, 2.0, 50],
-    "Very Poor": [300, 350, 120, 30, 3.5, 70],
-    "Severe": [400, 500, 150, 40, 4.5, 90],
-}
-selected_level = st.selectbox("📦 Choose Preset AQI Level", list(preset_values.keys()))
-default_values = list(map(float, preset_values[selected_level]))
-
-# ---------------- Inputs (Mobile Optimized) ----------------
-st.markdown("#### 🧪 Enter Pollutant Levels")
-
-st.markdown("**PM Pollutants**")
-pm25 = st.number_input("PM2.5 (µg/m³)", min_value=0.0, value=default_values[0])
-pm10 = st.number_input("PM10 (µg/m³)", min_value=0.0, value=default_values[1])
-
-st.markdown("**Gaseous Pollutants**")
-no2 = st.number_input("NO₂ (µg/m³)", min_value=0.0, value=default_values[2])
-so2 = st.number_input("SO₂ (µg/m³)", min_value=0.0, value=default_values[3])
-co = st.number_input("CO (mg/m³)", min_value=0.0, value=default_values[4])
-ozone = st.number_input("Ozone (µg/m³)", min_value=0.0, value=default_values[5])
-
-inputs = {
-    "PM2.5": pm25,
-    "PM10": pm10,
-    "NO2": no2,
-    "SO2": so2,
-    "CO": co,
-    "Ozone": ozone
-}
-
-# ---------------- AQI Category Simulated ----------------
-aqi_category = selected_level  # Replace with model.predict() if needed
-
-# ---------------- Risk Badge ----------------
-def get_risk_badge(aqi_category, inputs):
-    main_pollutant = max(inputs, key=inputs.get)
-    risk = {
-        "Good": "LOW",
-        "Satisfactory": "LOW",
-        "Moderate": "MEDIUM",
-        "Poor": "HIGH",
-        "Very Poor": "HIGH",
-        "Severe": "CRITICAL"
-    }.get(aqi_category, "UNKNOWN")
-    emoji = {
-        "LOW": "🟢",
-        "MEDIUM": "🟠",
-        "HIGH": "🔴",
-        "CRITICAL": "🚨"
-    }.get(risk, "❓")
-    return main_pollutant, risk, emoji
-
-main_pollutant, risk, emoji = get_risk_badge(aqi_category, inputs)
-
-st.markdown("---")
-st.markdown(f"""
-### {emoji} Pollution Risk Summary
-- **Risk Level:** `{risk}`
-- **Main Pollutant:** `{main_pollutant}`
-- **AQI Category:** `{aqi_category}`
-""")
-st.markdown("---")
-
-# ---------------- SHAP Plot Placeholder ----------------
-with st.expander("🔍 SHAP Model Explanation (Optional Placeholder)"):
-    st.info("Insert your SHAP plots here...")
-
-# ---------------- QR Code Section ----------------
-st.markdown("### 📲 Share Report via QR Code")
-paste_url = "https://your_link_here.com"
-qr = qrcode.QRCode(version=1, box_size=10, border=4)
-qr.add_data(paste_url)
-qr.make(fit=True)
-img = qr.make_image(fill_color="black", back_color="white").convert("RGB")
-img = img.resize((250, 250), Image.LANCZOS)
-
-with st.container():
-    st.image(img, caption="📷 Scan to View", use_container_width=False)
-
-buf = BytesIO()
-img.save(buf, format="PNG")
-st.download_button("📥 Download QR Code", data=buf.getvalue(), file_name="Delhi_AQI_QR.png", mime="image/png")
-
-# ---------------- Footer Scroll to Top ----------------
-st.markdown("---")
-st.markdown("""
-<a href="#top" style="text-decoration: none;">⬆️ **Back to Top**</a>
-""", unsafe_allow_html=True)
-
-
+    with open(log_file, mode='a', newline='') as file:
+        writer = csv.writer(file)
+        if not file_exists:
+            # Write headers first time
+            writer.writerow(["Timestamp", "PM2.5", "PM10", "NO2", "SO2", "CO", "Ozone", "AQI Category", "Main Pollutant", "Risk Level"])
+        
+        writer.writerow([
+            datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+            inputs["PM2.5"],
+            inputs["PM10"],
+            inputs["NO2"],
+            inputs["SO2"],
+            inputs["CO"],
+            inputs["Ozone"],
+            aqi_category,
+            main_pollutant,
+            risk
+        ])
