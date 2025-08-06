@@ -524,6 +524,8 @@ st.download_button(
 
 
 import streamlit as st
+prediction = model.predict([user_input])[0]
+aqi_category = prediction  # or map prediction to string like "Moderate"
 
 def get_risk_badge(aqi_category, inputs):
     # Identify highest pollutant
@@ -566,4 +568,5 @@ st.markdown(f"""
 - **Main Pollutant:** `{main_pollutant}`
 - **AQI Category:** `{aqi_category}`
 """)
+
 
