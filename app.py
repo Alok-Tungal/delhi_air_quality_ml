@@ -600,3 +600,16 @@ def log_prediction(inputs, aqi_category, main_pollutant, risk):
 
 log_prediction(inputs, aqi_category, main_pollutant, risk)
 
+
+import pandas as pd
+import os
+
+st.sidebar.markdown("### 🛠️ Admin Tools")
+
+if st.sidebar.button("📂 View Log File"):
+    if os.path.exists("aqi_logs.csv"):
+        df_log = pd.read_csv("aqi_logs.csv")
+        st.dataframe(df_log)
+    else:
+        st.warning("Log file not found. It may have reset.")
+
