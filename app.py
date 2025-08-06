@@ -594,3 +594,5 @@ def log_prediction(inputs, aqi_category, main_pollutant, risk):
             main_pollutant,
             risk
         ])
+
+log_prediction(inputs, aqi_category, main_pollutant, risk)
