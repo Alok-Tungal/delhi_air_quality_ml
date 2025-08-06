@@ -523,15 +523,21 @@ st.download_button(
 )
 
 
-import streamlit as st
-prediction = model.predict([user_input])[0]
-aqi_category = prediction  # or map prediction to string like "Moderate"
+inputs = {
+    "PM2.5": pm25,
+    "PM10": pm10,
+    "NO2": no2,
+    "SO2": so2,
+    "CO": co,
+    "Ozone": ozone
+}
 
+# 4. 🧠 Use preset label as AQI category (simulate ML prediction here)
+aqi_category = selected_level  # You can replace this with your ML model's output if needed
+
+# 5. 🚦 Risk Badge Generator
 def get_risk_badge(aqi_category, inputs):
-    # Identify highest pollutant
     main_pollutant = max(inputs, key=inputs.get)
-    
-    # Set risk level
     risk = {
         "Good": "LOW",
         "Satisfactory": "LOW",
@@ -550,23 +556,17 @@ def get_risk_badge(aqi_category, inputs):
 
     return main_pollutant, risk, emoji
 
-# Example usage
-inputs = {
-    "PM2.5": 220,
-    "PM10": 180,
-    "NO2": 90,
-    "SO2": 30,
-    "CO": 1.8,
-    "Ozone": 50
-}
-
+# 6. 🎯 Display Summary
 main_pollutant, risk, emoji = get_risk_badge(aqi_category, inputs)
 
+st.markdown("---")
 st.markdown(f"""
 ### {emoji} Pollution Risk Summary
 - **Risk Level:** `{risk}`
 - **Main Pollutant:** `{main_pollutant}`
 - **AQI Category:** `{aqi_category}`
 """)
+st.markdown("---")
+
 
 
