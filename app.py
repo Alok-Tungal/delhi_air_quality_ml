@@ -481,7 +481,7 @@ emoji = color_map.get(pred_label, "❓")
 
 
 # # ✅ Replace this with your real public URL from GitHub Gist or Pastebin
-# paste_url = "https://alokdelhiairqualityml.streamlit.app/"  # ← replace with real link
+paste_url = "https://alokdelhiairqualityml.streamlit.app/"  # ← replace with real link
 
 # # ✅ Generate QR code for that public link
 # qr = qrcode.make(paste_url)
@@ -522,9 +522,6 @@ qr_img.save(qr_path)
 # ✅ Show in Streamlit
 st.markdown("### 📲 Share This AQI Summary via QR Code")
 st.image(qr_path, caption="🔗 Scan to open AQI Report", use_container_width=True)
-
-
-
 
 
 
