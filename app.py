@@ -492,33 +492,58 @@ paste_url = "https://alokdelhiairqualityml.streamlit.app/"  # ← replace with r
 # st.markdown("### 📲 Share This AQI Summary via QR Code")
 # st.image(qr_path, caption="🔗 Scan to open AQI Report", use_container_width=True)
 
-import qrcode
-from PIL import Image
-import urllib.parse
+# import qrcode
+# from PIL import Image
+# import urllib.parse
 
 # ✅ Generate QR code
+# qr = qrcode.QRCode(
+#     version=1,  # smaller size
+#     error_correction=qrcode.constants.ERROR_CORRECT_L,
+#     box_size=6,  # smaller box = smaller image
+#     border=2     # smaller border
+# )
+# qr.add_data(paste_url)
+# qr.make(fit=Tr)ue)
+
+# # ✅ Create QR image and resize it
+# qr_img = qr.make_image(fill_color="black", back_color="white").convert("RGB")
+# qr_img = qr_img.resize((50, 50))  # Resize to 200x200 pixels
+# qr_path = "aqi_qr_resized.png"
+# qr_img.save(qr_path
+
+# # ✅ Optional social media share
+# tweet_text = f"Delhi AQI today is {pred_label} {emoji}. Check pollution levels here: {paste_url} #AQI #AirQuality"
+# tweet_url = f"https://twitter.com/intent/tweet?text={urllib.parse.quote(tweet_text)}"
+
+# st.markdown("### 📤 Share on Social Media")
+# st.markdown(f"[🐦 Tweet This Report]({tweet_url})", unsafe_allow_html=True)
+
+# # ✅ Show in Streamlit
+# st.markdown("### 📲 Share This AQI Summary via QR Code")
+# st.image(qr_path, caption="🔗 Scan to open AQI Report", use_container_width=True)
+
+import qrcode
+from PIL import Image
+import streamlit as st
+
+# Example: Pastebin or GitHub Gist URL
+paste_url = "https://alokdelhiairqualityml.streamlit.app/"  # ← replace with real link
+
+# Generate QR Code with high box_size
 qr = qrcode.QRCode(
-    version=1,  # smaller size
-    error_correction=qrcode.constants.ERROR_CORRECT_L,
-    box_size=6,  # smaller box = smaller image
-    border=2     # smaller border
+    version=1,
+    box_size=10,     # Controls the size of the boxes (higher = higher resolution)
+    border=4
 )
 qr.add_data(paste_url)
 qr.make(fit=True)
 
-# ✅ Create QR image and resize it
-qr_img = qr.make_image(fill_color="black", back_color="white").convert("RGB")
-qr_img = qr_img.resize((50, 50))  # Resize to 200x200 pixels
-qr_path = "aqi_qr_resized.png"
-qr_img.save(qr_path)
+# Create Image
+img = qr.make_image(fill_color="black", back_color="white").convert('RGB')
 
-# ✅ Optional social media share
-tweet_text = f"Delhi AQI today is {pred_label} {emoji}. Check pollution levels here: {paste_url} #AQI #AirQuality"
-tweet_url = f"https://twitter.com/intent/tweet?text={urllib.parse.quote(tweet_text)}"
+# Resize for display (suitable for laptop screen)
+img = img.resize((300, 300), Image.LANCZOS)  # Use high-quality resampling
 
-st.markdown("### 📤 Share on Social Media")
-st.markdown(f"[🐦 Tweet This Report]({tweet_url})", unsafe_allow_html=True)
-
-# ✅ Show in Streamlit
-st.markdown("### 📲 Share This AQI Summary via QR Code")
-st.image(qr_path, caption="🔗 Scan to open AQI Report", use_container_width=True)
+# Display in Streamlit
+st.image(img, caption="Scan to Open the Report", use_column_width=False)
