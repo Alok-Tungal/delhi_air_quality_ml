@@ -613,3 +613,19 @@ if st.sidebar.button("📂 View Log File"):
     else:
         st.warning("Log file not found. It may have reset.")
 
+
+from google.oauth2.service_account import Credentials
+import gspread
+
+def get_google_client():
+    creds_dict = st.secrets["gspread"]
+    credentials = Credentials.from_service_account_info(dict(creds_dict))
+    client = gspread.authorize(credentials)
+    return client
+
+
+
+client = get_google_client()
+sheet = client.open("Delhi_AQI_Logs").sheet1
+sheet.append_row([...])
+
