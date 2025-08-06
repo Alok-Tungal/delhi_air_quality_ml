@@ -526,24 +526,35 @@ paste_url = "https://alokdelhiairqualityml.streamlit.app/"  # ← replace with r
 import qrcode
 from PIL import Image
 import streamlit as st
+from io import BytesIO
 
 # Example: Pastebin or GitHub Gist URL
-paste_url = "https://alokdelhiairqualityml.streamlit.app/"  # ← replace with real link
+paste_url = "https://gist.github.com/your_gist_link_here"
 
-# Generate QR Code with high box_size
+# Generate QR Code with high box_size for clarity
 qr = qrcode.QRCode(
     version=1,
-    box_size=10,     # Controls the size of the boxes (higher = higher resolution)
+    box_size=10,
     border=4
 )
 qr.add_data(paste_url)
 qr.make(fit=True)
 
-# Create Image
-img = qr.make_image(fill_color="black", back_color="white").convert('RGB')
+# Create and resize image for laptop viewing
+img = qr.make_image(fill_color="black", back_color="white").convert("RGB")
+img = img.resize((300, 300), Image.LANCZOS)  # Clear and sharp
 
-# Resize for display (suitable for laptop screen)
-img = img.resize((300, 300), Image.LANCZOS)  # Use high-quality resampling
+# Display QR code with updated Streamlit parameter
+st.image(img, caption="📱 Scan to open the report", use_container_width=False)
 
-# Display in Streamlit
-st.image(img, caption="Scan to Open the Report", use_column_width=False)
+# Optional: Download QR Code
+buf = BytesIO()
+img.save(buf, format="PNG")
+byte_im = buf.getvalue()
+
+st.download_button(
+    label="📥 Download QR Code",
+    data=byte_im,
+    file_name="Delhi_AQI_QR_Code.png",
+    mime="image/png"
+)
