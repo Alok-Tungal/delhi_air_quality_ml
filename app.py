@@ -465,56 +465,25 @@ from PIL import Image
 import urllib.parse
 import os
 
-# ✅ Prepare AQI summary (you can also post this to GitHub Gist / Pastebin manually)
-summary_text = f"""
-📍 Delhi AQI Report
-if st.button("🔮 Predict AQI Category", key="predict_aqi"):
-    input_data = np.array([[pm25, pm10, no2, so2, co, ozone]])
-    pred_encoded = model.predict(input_data)[0]
-    pred_label = label_encoder.inverse_transform([pred_encoded])[0]
+# ✅ Replace this with your real public URL from GitHub Gist or Pastebin
+paste_url = "https://gist.github.com/your_gist_link_here"  # ← replace with real link
 
-    # ✅ Add this here
-    color_map = {
-        "Good": "🟢",
-        "Satisfactory": "🟡",
-        "Moderate": "🟠",
-        "Poor": "🔴",
-        "Very Poor": "🟣",
-        "Severe": "⚫️"
-    }
-    emoji = color_map.get(pred_label, "❓")
-
-    # ... now Step 10 can use {emoji}
-
-📌 AQI Category: {emoji} {pred_label}
-
-Pollutants:
-- PM2.5: {pm25} µg/m³
-- PM10: {pm10} µg/m³
-- NO₂: {no2} µg/m³
-- SO₂: {so2} µg/m³
-- CO: {co} mg/m³
-- Ozone: {ozone} µg/m³
-"""
-
-# ✅ Use a sharable paste link (simulate Pastebin/GitHub Gist, replace with actual if needed)
-paste_url = "https://gist.github.com/your_gist_link_here"  # Replace with your real shareable link
-
-# ✅ Generate QR code for the link
+# ✅ Generate QR code for that public link
 qr = qrcode.make(paste_url)
 qr_path = "aqi_qr_upgraded.png"
 qr.save(qr_path)
 
-# ✅ Show in Streamlit
+# ✅ Show QR code in app
 st.markdown("### 📲 Share This AQI Summary via QR Code")
 st.image(qr_path, caption="🔗 Scan to open AQI Report", use_container_width=True)
 
-# ✅ Social Media Share
+# ✅ Optional social media share
 tweet_text = f"Delhi AQI today is {pred_label} {emoji}. Check pollution levels here: {paste_url} #AQI #AirQuality"
 tweet_url = f"https://twitter.com/intent/tweet?text={urllib.parse.quote(tweet_text)}"
 
 st.markdown("### 📤 Share on Social Media")
 st.markdown(f"[🐦 Tweet This Report]({tweet_url})", unsafe_allow_html=True)
+
 
 
 
