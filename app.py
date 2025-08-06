@@ -569,30 +569,34 @@ st.markdown(f"""
 st.markdown("---")
 
 import csv
-from datetime import datetime
 import os
+from datetime import datetime
 
 def log_prediction(inputs, aqi_category, main_pollutant, risk):
     log_file = "aqi_logs.csv"
     file_exists = os.path.exists(log_file)
 
-    with open(log_file, mode='a', newline='') as file:
-        writer = csv.writer(file)
-        if not file_exists:
-            # Write headers first time
-            writer.writerow(["Timestamp", "PM2.5", "PM10", "NO2", "SO2", "CO", "Ozone", "AQI Category", "Main Pollutant", "Risk Level"])
+    try:
+        with open(log_file, mode='a', newline='') as file:
+            writer = csv.writer(file)
+            if not file_exists:
+                writer.writerow(["Timestamp", "PM2.5", "PM10", "NO2", "SO2", "CO", "Ozone", "AQI Category", "Main Pollutant", "Risk Level"])
+            writer.writerow([
+                datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                inputs["PM2.5"],
+                inputs["PM10"],
+                inputs["NO2"],
+                inputs["SO2"],
+                inputs["CO"],
+                inputs["Ozone"],
+                aqi_category,
+                main_pollutant,
+                risk
+            ])
         
-        writer.writerow([
-            datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-            inputs["PM2.5"],
-            inputs["PM10"],
-            inputs["NO2"],
-            inputs["SO2"],
-            inputs["CO"],
-            inputs["Ozone"],
-            aqi_category,
-            main_pollutant,
-            risk
-        ])
+        st.success("✅ Prediction logged successfully to `aqi_logs.csv`.")
+    except Exception as e:
+        st.error(f"❌ Failed to log prediction: {e}")
 
 log_prediction(inputs, aqi_category, main_pollutant, risk)
+
