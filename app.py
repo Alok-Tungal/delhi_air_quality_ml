@@ -471,6 +471,7 @@ import os
 input_data = np.array([[pm25, pm10, no2, so2, co, ozone]])
 pred_encoded = model.predict(input_data)[0]
 pred_label = label_encoder.inverse_transform([pred_encoded])[0]
+paste_url = "https://alokdelhiairqualityml.streamlit.app/"
 
 color_map = {
     "Good": "🟢",
@@ -494,8 +495,7 @@ st.markdown("### 📲 Share This AQI Summary via QR Code")
 st.image(qr_path, caption="🔗 Scan to open AQI Report", use_container_width=True)
 
 
-# Example: Pastebin or GitHub Gist URL
-paste_url = "https://alokdelhiairqualityml.streamlit.app/"
+
 
 # Generate QR Code with high box_size for clarity
 qr = qrcode.QRCode(
@@ -524,4 +524,5 @@ st.download_button(
     file_name="Delhi_AQI_QR_Code.png",
     mime="image/png"
 )
+
 
