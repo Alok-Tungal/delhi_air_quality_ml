@@ -508,7 +508,8 @@ st.image(img, caption="📱 Scan to open the report", use_container_width=False)
 
 # ✅ Show in Streamlit
 st.markdown("### 📲 Share This AQI Summary via QR Code")
-st.image(qr_path, caption="🔗 Scan to open AQI Report", use_container_width=True)
+# st.image(qr_path, caption="🔗 Scan to open AQI Report", use_container_width=True)
+
 # Optional: Download QR Code
 buf = BytesIO()
 img.save(buf, format="PNG")
