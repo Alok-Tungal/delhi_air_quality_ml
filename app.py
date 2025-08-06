@@ -521,3 +521,49 @@ st.download_button(
     file_name="Delhi_AQI_QR_Code.png",
     mime="image/png"
 )
+
+
+import streamlit as st
+
+def get_risk_badge(aqi_category, inputs):
+    # Identify highest pollutant
+    main_pollutant = max(inputs, key=inputs.get)
+    
+    # Set risk level
+    risk = {
+        "Good": "LOW",
+        "Satisfactory": "LOW",
+        "Moderate": "MEDIUM",
+        "Poor": "HIGH",
+        "Very Poor": "HIGH",
+        "Severe": "CRITICAL"
+    }.get(aqi_category, "UNKNOWN")
+
+    emoji = {
+        "LOW": "🟢",
+        "MEDIUM": "🟠",
+        "HIGH": "🔴",
+        "CRITICAL": "🚨"
+    }.get(risk, "❓")
+
+    return main_pollutant, risk, emoji
+
+# Example usage
+inputs = {
+    "PM2.5": 220,
+    "PM10": 180,
+    "NO2": 90,
+    "SO2": 30,
+    "CO": 1.8,
+    "Ozone": 50
+}
+
+main_pollutant, risk, emoji = get_risk_badge(aqi_category, inputs)
+
+st.markdown(f"""
+### {emoji} Pollution Risk Summary
+- **Risk Level:** `{risk}`
+- **Main Pollutant:** `{main_pollutant}`
+- **AQI Category:** `{aqi_category}`
+""")
+
