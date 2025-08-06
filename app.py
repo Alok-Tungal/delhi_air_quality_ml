@@ -480,24 +480,49 @@ color_map = {
 emoji = color_map.get(pred_label, "❓")
 
 
-# ✅ Replace this with your real public URL from GitHub Gist or Pastebin
-paste_url = "https://alokdelhiairqualityml.streamlit.app/"  # ← replace with real link
+# # ✅ Replace this with your real public URL from GitHub Gist or Pastebin
+# paste_url = "https://alokdelhiairqualityml.streamlit.app/"  # ← replace with real link
 
-# ✅ Generate QR code for that public link
-qr = qrcode.make(paste_url)
-qr_path = "aqi_qr_upgraded.png"
-qr.save(qr_path)
+# # ✅ Generate QR code for that public link
+# qr = qrcode.make(paste_url)
+# qr_path = "aqi_qr_upgraded.png"
+# qr.save(qr_path)
 
-# ✅ Show QR code in app
+# # ✅ Show QR code in app
+# st.markdown("### 📲 Share This AQI Summary via QR Code")
+# st.image(qr_path, caption="🔗 Scan to open AQI Report", use_container_width=True)
+
+# # ✅ Optional social media share
+# tweet_text = f"Delhi AQI today is {pred_label} {emoji}. Check pollution levels here: {paste_url} #AQI #AirQuality"
+# tweet_url = f"https://twitter.com/intent/tweet?text={urllib.parse.quote(tweet_text)}"
+
+# st.markdown("### 📤 Share on Social Media")
+# st.markdown(f"[🐦 Tweet This Report]({tweet_url})", unsafe_allow_html=True)
+
+import qrcode
+from PIL import Image
+import urllib.parse
+
+# ✅ Generate QR code
+qr = qrcode.QRCode(
+    version=1,  # smaller size
+    error_correction=qrcode.constants.ERROR_CORRECT_L,
+    box_size=6,  # smaller box = smaller image
+    border=2     # smaller border
+)
+qr.add_data(paste_url)
+qr.make(fit=True)
+
+# ✅ Create QR image and resize it
+qr_img = qr.make_image(fill_color="black", back_color="white").convert("RGB")
+qr_img = qr_img.resize((200, 200))  # Resize to 200x200 pixels
+qr_path = "aqi_qr_resized.png"
+qr_img.save(qr_path)
+
+# ✅ Show in Streamlit
 st.markdown("### 📲 Share This AQI Summary via QR Code")
 st.image(qr_path, caption="🔗 Scan to open AQI Report", use_container_width=True)
 
-# ✅ Optional social media share
-tweet_text = f"Delhi AQI today is {pred_label} {emoji}. Check pollution levels here: {paste_url} #AQI #AirQuality"
-tweet_url = f"https://twitter.com/intent/tweet?text={urllib.parse.quote(tweet_text)}"
-
-st.markdown("### 📤 Share on Social Media")
-st.markdown(f"[🐦 Tweet This Report]({tweet_url})", unsafe_allow_html=True)
 
 
 
