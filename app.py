@@ -8,7 +8,7 @@ st.set_page_config(page_title="🌫️ Delhi AQI Dashboard", layout="wide")
 # Inject custom CSS for cleaner, modern look
 st.markdown("""
     <style>
-        body {
+        body { 
             background-color: #f9f9f9;
             font-family: 'Segoe UI', sans-serif;
         }
@@ -628,4 +628,5 @@ def get_google_client():
 client = get_google_client()
 sheet = client.open("Delhi_AQI_Logs").sheet1
 sheet.append_row([...])
+
 
